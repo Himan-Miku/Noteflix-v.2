@@ -10,7 +10,7 @@ const poppins = Poppins({
 
 export const metadata = {
   title: "Noteflix",
-  description: "An Anime theme Notes Application.",
+  description: "An Anime Theme Notes Application.",
 };
 
 export default function RootLayout({
