@@ -18,7 +18,10 @@
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "typescript": "4.9.5"
+    "react-github-login-button": "^1.0.1",
+    "react-google-button": "^0.7.2",
+    "typescript": "4.9.5",
+    "zustand": "^4.3.6"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",

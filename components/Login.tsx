@@ -1,18 +1,33 @@
 "use client";
-import { UserAuth } from "@/context/AuthContext";
+import { useAuthStore } from "@/store/authStore";
+import GoogleButton from "react-google-button";
+import GithubButton from "react-github-login-button";
 
 const Login = () => {
-  // const { googleSignIn } = UserAuth()
-
+  const { googleSignIn, githubSignIn } = useAuthStore();
+  const signInWithGoogle = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const signInWithGithub = async () => {
+    try {
+      await githubSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
-    <>
-      <button
-        className="px-4 py-2 text-[#fff] rounded-lg border border-[#fff] m-1 w-full bg-[#9f4040ae]"
-        // onClick={() => googleSignIn()}
-      >
+    <div className="flex items-center justify-center gap-y-8">
+      <GoogleButton onClick={signInWithGoogle}>
         Sign In With Google
-      </button>
-    </>
+      </GoogleButton>
+      <GithubButton onClick={signInWithGithub}>
+        Sign In With Github
+      </GithubButton>
+    </div>
   );
 };
 
