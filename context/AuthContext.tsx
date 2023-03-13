@@ -6,7 +6,7 @@ import { AuthContextType } from "@/types/@types.auth";
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
-const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   const googleSignIn = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
@@ -37,8 +37,6 @@ const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
-
-export default AuthContext;
 
 export const UserAuth = () => {
   return useContext(AuthContext);

@@ -1,3 +1,44 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: #202124;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #525355;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(244, 242, 239, 0.5);
+  }
+}
+
+.cal-h {
+  height: calc(100vh - 4.8rem);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.notes-columns {
+  columns: 240px auto;
+}
+.box-shadow-color {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
