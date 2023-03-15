@@ -1,10 +1,6 @@
 "use client";
-import useAuthStore from "@/store/authStore";
-import GoogleButton from "react-google-button";
-import GithubButton from "react-github-login-button";
 
 const Login = () => {
-  const { googleSignIn, githubSignIn } = useAuthStore();
   const signInWithGoogle = async () => {
     try {
       await googleSignIn();

@@ -1,10 +1,7 @@
 import Login from "@/components/Login";
 import Logout from "@/components/Logout";
-import useAuthStore from "@/store/authStore";
 
 const Navbar = async () => {
-  const { user } = useAuthStore();
-
   return (
     <div className="flex border-b border-gray-500 justify-between items-center px-4 py-2">
       <div className="flex gap-4 items-center justify-center">

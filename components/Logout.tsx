@@ -2,15 +2,12 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import useAuthStore from "@/store/authStore";
 
 type UserProps = {
   image: string;
 };
 
 const Logout = ({ image }: UserProps) => {
-  const { logOut } = useAuthStore();
-
   const signOut = async () => {
     try {
       await logOut();
