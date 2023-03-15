@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyBT7mAxpH33FU2R1oxN4ZWuUMNlqHJNpE0",
   authDomain: "noteflix-621dd.firebaseapp.com",
   projectId: "noteflix-621dd",
