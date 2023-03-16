@@ -1,7 +1,11 @@
 import Login from "@/components/Login";
 import Logout from "@/components/Logout";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
 
 const Navbar = async () => {
+  const session = await getServerSession(authOptions);
+
   return (
     <div className="flex border-b border-gray-500 justify-between items-center px-4 py-2">
       <div className="flex gap-4 items-center justify-center">
@@ -43,7 +47,8 @@ const Navbar = async () => {
         </button>
       </div>
       <div>
-        <div>{user ? <Logout image={user.photoURL!} /> : <Login />}</div>
+        {session?.user ? <Logout image={session.user.image!} /> : <Login />}
+        {/* <div>{user ? <Logout image={user.photoURL!} /> : <Login />}</div> */}
       </div>
     </div>
   );

@@ -2,7 +2,8 @@ import "./globals.css";
 import { Poppins } from "next/font/google";
 import Sidebar from "./Sidebar";
 import Landing from "./Landing";
-import useAuthStore from "@/store/authStore";
+import { authOptions } from "@/pages/api/auth/[...nextauth]";
+import { getServerSession } from "next-auth";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -16,19 +17,19 @@ export const metadata = {
   description: "An Anime Theme Notes Application.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useAuthStore();
+  const session = await getServerSession(authOptions);
 
-  console.log("User from layout component: ", user);
+  console.log("Session from layout component: ", session);
 
   return (
     <html className="overflow-hidden" lang="en">
       <body className={`${poppins.variable} font-poppins bg-[#202124]`}>
-        {user ? (
+        {session?.user ? (
           <>
             {/* @ts-ignore */}
             <Navbar />
