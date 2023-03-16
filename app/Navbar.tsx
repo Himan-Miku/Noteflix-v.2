@@ -1,5 +1,5 @@
-import Login from "@/components/Login";
 import Logout from "@/components/Logout";
+import LoginUser from "@/components/LoginUser";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 
@@ -47,7 +47,7 @@ const Navbar = async () => {
         </button>
       </div>
       <div>
-        {session?.user ? <Logout image={session.user.image!} /> : <Login />}
+        {session?.user ? <Logout image={session.user.image!} /> : <LoginUser />}
         {/* <div>{user ? <Logout image={user.photoURL!} /> : <Login />}</div> */}
       </div>
     </div>
