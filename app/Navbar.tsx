@@ -48,7 +48,6 @@ const Navbar = async () => {
       </div>
       <div>
         {session?.user ? <Logout image={session.user.image!} /> : <LoginUser />}
-        {/* <div>{user ? <Logout image={user.photoURL!} /> : <Login />}</div> */}
       </div>
     </div>
   );
