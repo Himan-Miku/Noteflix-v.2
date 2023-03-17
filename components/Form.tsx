@@ -43,15 +43,12 @@ const Form = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const doc = await addDoc(
-      collection(db, "users", session?.user?.email!, "notes"),
-      {
-        title: inputs.title,
-        content: inputs.content,
-        createdAt: serverTimestamp(),
-        userId: session?.user?.email,
-      }
-    );
+    const doc = await addDoc(collection(db, "notes"), {
+      title: inputs.title,
+      content: inputs.content,
+      createdAt: serverTimestamp(),
+      userId: session?.user?.email,
+    });
 
     setInputs({
       title: "",
