@@ -1,18 +1,20 @@
 "use client";
 
+import { db } from "@/config/firebase";
 import { bgImages } from "@/utils/backgrounds";
+import { deleteDoc, doc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface notesProps {
   id: string;
-  content: string | null;
+  content: string;
   title: string;
-  bgImage: string | null;
+  bgImage?: string;
   bgImageFn: (image: string) => void;
 }
 
-export interface deletedNote {
+interface deletedNote {
   id: string;
   title: string;
 }
@@ -20,18 +22,12 @@ export interface deletedNote {
 const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
   const router = useRouter();
   const [showBackgrounds, setShowBackgrounds] = useState(false);
+
   const deleteHandler = async ({ id, title }: deletedNote) => {
-    const data = await fetch("/api/notes", {
-      method: "DELETE",
-      body: JSON.stringify({
-        id,
-        title,
-      }),
-    });
-    const res = await data.json();
-    console.log(res);
+    const deletedNote = await deleteDoc(doc(db, "notes", id));
     router.refresh();
   };
+
   return (
     <div>
       <button
