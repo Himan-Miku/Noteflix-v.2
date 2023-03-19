@@ -43,7 +43,7 @@ const Form = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const doc = await addDoc(collection(db, "notes"), {
+    await addDoc(collection(db, "notes"), {
       title: inputs.title,
       content: inputs.content,
       createdAt: serverTimestamp(),

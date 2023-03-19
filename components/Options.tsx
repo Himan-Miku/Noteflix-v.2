@@ -62,9 +62,6 @@ const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
           width={20}
         />
       </button>
-      <button className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full">
-        <RxUpdate fontSize={"1.225rem"} />
-      </button>
       <div className="relative inline-block">
         <button
           className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full"
@@ -104,6 +101,9 @@ const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
             </div>
           </div>
         )}
+        <button className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full">
+          <RxUpdate fontSize={"1.225rem"} />
+        </button>
       </div>
     </div>
   );
