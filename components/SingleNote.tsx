@@ -23,7 +23,13 @@ const Note = ({ id, data }: noteProps) => {
 
   return (
     <div
-      className={`inline-block p-3 mb-4 w-full h-max border border-1 border-[#575B5F] rounded-lg`}
+      style={{
+        backgroundImage: `url(${data.bgImage})`,
+        backgroundPositionX: "right",
+        backgroundPositionY: "bottom",
+        backgroundSize: "cover",
+      }}
+      className={`inline-block p-3 mb-4 w-full h-max border border-1 border-[#575B5F] rounded-lg box-shadow-color`}
     >
       <div className="px-2">
         <h3 className="text-[#f5f5f5] font-semibold text-lg">{data.title}</h3>
