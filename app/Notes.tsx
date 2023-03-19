@@ -4,6 +4,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { collection, query, orderBy } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Note from "@/components/Note";
+import Link from "next/link";
 
 export interface iNote {
   title: string;
@@ -25,7 +26,9 @@ export default function Notes() {
   return (
     <div ref={parent} className="notes-columns gap-4 p-4 my-8">
       {notes?.docs.map((note) => (
-        <Note key={note.id} id={note.id} data={note.data()} />
+        <Link href={`${note.id}`}>
+          <Note key={note.id} id={note.id} data={note.data()} />
+        </Link>
       ))}
     </div>
   );
