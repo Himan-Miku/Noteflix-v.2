@@ -1,7 +1,14 @@
 "use client";
 
 import { BsFillPatchPlusFill } from "react-icons/bs";
-import { useState, useRef, useEffect, RefObject, FormEvent } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  RefObject,
+  FormEvent,
+  ChangeEvent,
+} from "react";
 import { useRouter } from "next/navigation";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/config/firebase";
@@ -67,6 +74,22 @@ const Form = () => {
     setShowInput(true);
   };
 
+  const handleTextAreaInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setInputs({ ...inputs, content: e.target.value });
+    console.log(e.target.scrollHeight, " => height");
+    console.log(e.target.value.length, " => inputLength");
+
+    if (e.target.scrollHeight <= 64 || inputs.content.length <= 29) setRows(1);
+    else if (e.target.scrollHeight === 88 || inputs.content.length <= 58)
+      setRows(2);
+    else if (e.target.scrollHeight === 112 || inputs.content.length <= 87)
+      setRows(3);
+    else if (e.target.scrollHeight === 136 || inputs.content.length <= 116)
+      setRows(4);
+    else if (e.target.scrollHeight >= 160 || inputs.content.length >= 145)
+      setRows(5);
+  };
+
   return (
     <div className="flex justify-center items-center">
       <form
@@ -87,19 +110,10 @@ const Form = () => {
 
         <textarea
           onClick={handleShowInput}
-          className={`bg-[#202124] px-4 py-2 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden h-auto max-h-40 text-white`}
+          className={`bg-[#202124] px-4 py-2 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden h-auto max-h-40 text-white`}
           placeholder="Take a note..."
           value={inputs.content}
-          onChange={(e) => {
-            setInputs({ ...inputs, content: e.target.value });
-            console.log(e.target.scrollHeight);
-
-            if (e.target.scrollHeight <= 64) setRows(2);
-            else if (e.target.scrollHeight === 88) setRows(3);
-            else if (e.target.scrollHeight === 112) setRows(4);
-            else if (e.target.scrollHeight === 136) setRows(5);
-            else if (e.target.scrollHeight >= 160) setRows(6);
-          }}
+          onChange={(e) => handleTextAreaInput(e)}
           rows={rows}
           autoFocus
           required

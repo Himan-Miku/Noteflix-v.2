@@ -3,7 +3,7 @@ import Options from "./Options";
 import { useRouter } from "next/navigation";
 import { doc, DocumentData, updateDoc } from "firebase/firestore";
 import { db } from "@/config/firebase";
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 interface noteProps {
   id: string;
@@ -13,9 +13,10 @@ interface noteProps {
 const Note = ({ id, data }: noteProps) => {
   const router = useRouter();
   const [inputs, setInputs] = useState({
-    title: data.title,
-    content: data.content,
+    title: data?.title,
+    content: data?.content,
   });
+  const [rows, setRows] = useState(1);
 
   const bgImageFn = async (image: string) => {
     const noteImage = await updateDoc(doc(db, "notes", id), {
@@ -35,6 +36,22 @@ const Note = ({ id, data }: noteProps) => {
     });
 
     router.refresh();
+  };
+
+  const handleTextAreaInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setInputs({ ...inputs, content: e.target.value });
+    console.log(e.target.scrollHeight, " => height");
+    console.log(e.target.value.length, " => inputLength");
+
+    if (e.target.scrollHeight <= 64 || inputs.content.length <= 29) setRows(1);
+    else if (e.target.scrollHeight === 88 || inputs.content.length <= 58)
+      setRows(2);
+    else if (e.target.scrollHeight === 112 || inputs.content.length <= 87)
+      setRows(3);
+    else if (e.target.scrollHeight === 136 || inputs.content.length <= 116)
+      setRows(4);
+    else if (e.target.scrollHeight >= 160 || inputs.content.length >= 145)
+      setRows(5);
   };
 
   return (
@@ -59,23 +76,21 @@ const Note = ({ id, data }: noteProps) => {
         />
 
         <textarea
-          className={`bg-transparent px-4 py-2 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white overflow-hidden resize-none h-auto max-h-40 text-white`}
+          className={`bg-transparent px-4 py-2 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden h-auto max-h-40 text-white`}
           placeholder="Take a note..."
           value={inputs.content}
-          onChange={(e) => {
-            setInputs({ ...inputs, content: e.target.value });
-            e.target.style.height = "auto";
-            e.target.style.height = e.target.scrollHeight + "px";
-          }}
+          onChange={(e) => handleTextAreaInput(e)}
+          rows={rows}
+          autoFocus
           required
         />
 
         <div>
           <Options
             id={id}
-            title={data.title}
-            content={data.content}
-            bgImage={data.bgImage!}
+            title={data?.title}
+            content={data?.content}
+            bgImage={data?.bgImage!}
             bgImageFn={bgImageFn}
           />
         </div>
