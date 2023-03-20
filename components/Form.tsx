@@ -14,7 +14,8 @@ export interface postNote {
 
 const Form = () => {
   const router = useRouter();
-  const formRef = useRef(null);
+  const [rows, setRows] = useState(1);
+  const formRef = useRef<HTMLFormElement>(null);
   const { data: session } = useSession();
 
   const [inputs, setInputs] = useState({
@@ -55,6 +56,10 @@ const Form = () => {
       content: "",
     });
 
+    setRows(1);
+
+    setShowInput(false);
+
     router.refresh();
   };
 
@@ -82,19 +87,21 @@ const Form = () => {
 
         <textarea
           onClick={handleShowInput}
-          onInput={(e) => {
-            e.currentTarget.style.setProperty("height", "1px");
-            e.currentTarget.style.setProperty(
-              "height",
-              e.currentTarget.scrollHeight + "px"
-            );
-          }}
-          className={`bg-[#202124] px-4 py-2 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden max-h-40 text-white`}
+          className={`bg-[#202124] px-4 py-2 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden h-auto max-h-40 text-white`}
           placeholder="Take a note..."
           value={inputs.content}
-          onChange={(e) => setInputs({ ...inputs, content: e.target.value })}
+          onChange={(e) => {
+            setInputs({ ...inputs, content: e.target.value });
+            console.log(e.target.scrollHeight);
+
+            if (e.target.scrollHeight <= 64) setRows(2);
+            else if (e.target.scrollHeight === 88) setRows(3);
+            else if (e.target.scrollHeight === 112) setRows(4);
+            else if (e.target.scrollHeight === 136) setRows(5);
+            else if (e.target.scrollHeight >= 160) setRows(6);
+          }}
+          rows={rows}
           autoFocus
-          rows={1}
           required
         />
 
