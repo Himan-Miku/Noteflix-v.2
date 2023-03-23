@@ -3,7 +3,7 @@ import Options from "./Options";
 import { useRouter } from "next/navigation";
 import { doc, DocumentData, updateDoc } from "firebase/firestore";
 import { db } from "@/config/firebase";
-import Link from "next/link";
+import { modalContext, iModalContext } from "@/context/ModalContext";
 
 interface noteProps {
   id: string;
@@ -12,6 +12,7 @@ interface noteProps {
 
 const Note = ({ id, data }: noteProps) => {
   const router = useRouter();
+  const { openModal } = modalContext() as iModalContext;
 
   const bgImageFn = async (image: string) => {
     const noteImage = await updateDoc(doc(db, "notes", id), {
@@ -32,11 +33,7 @@ const Note = ({ id, data }: noteProps) => {
       }}
       className={`inline-block p-3 mb-4 w-full h-max border border-1 border-[#575B5F] rounded-lg`}
     >
-      <button
-        type="button"
-        onClick={() => console.log("clicked")}
-        className="note-btn"
-      >
+      <button type="button" onClick={openModal} className="note-btn">
         <div className="px-2">
           <h3 className="text-[#f5f5f5] font-semibold text-lg">{data.title}</h3>
         </div>

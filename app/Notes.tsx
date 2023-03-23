@@ -4,6 +4,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { collection, query, orderBy } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Note from "@/components/Note";
+import Modal from "@/components/Modal";
 
 export interface iNote {
   title: string;
@@ -27,6 +28,7 @@ export default function Notes() {
       {notes?.docs.map((note) => (
         <Note key={note.id} id={note.id} data={note.data()} />
       ))}
+      <Modal />
     </div>
   );
 }
