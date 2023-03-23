@@ -9,7 +9,6 @@ import {
   FormEvent,
   ChangeEvent,
 } from "react";
-import { useRouter } from "next/navigation";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { useSession } from "next-auth/react";
@@ -20,7 +19,6 @@ export interface postNote {
 }
 
 const Form = () => {
-  const router = useRouter();
   const [rows, setRows] = useState(1);
   const formRef = useRef<HTMLFormElement>(null);
   const { data: session } = useSession();
@@ -66,8 +64,6 @@ const Form = () => {
     setRows(1);
 
     setShowInput(false);
-
-    router.refresh();
   };
 
   const handleShowInput = () => {

@@ -1,15 +1,17 @@
 "use client";
 
 import { iModalContext, modalContext } from "@/context/ModalContext";
+import { iNoteContext, noteContext } from "@/context/NoteContext";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { ChangeEvent, Fragment, useState } from "react";
 
 const Modal = () => {
   const { isOpen, closeModal } = modalContext() as iModalContext;
+  const { notedata } = noteContext() as iNoteContext;
   const [rows, setRows] = useState(1);
   const [inputs, setInputs] = useState({
-    title: "",
-    content: "",
+    title: notedata?.title,
+    content: notedata?.content,
   });
 
   const handleTextAreaInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -55,7 +57,15 @@ const Modal = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel
+                  style={{
+                    backgroundImage: `url(${notedata?.bgImage})`,
+                    backgroundPositionX: "right",
+                    backgroundPositionY: "bottom",
+                    backgroundSize: "cover",
+                  }}
+                  className="w-full max-w-md transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all"
+                >
                   <Dialog.Title as="h3">
                     <input
                       className="bg-transparent px-4 py-2 focus:outline-none w-full text-white font-semibold placeholder:font-semibold caret-white"

@@ -3,7 +3,6 @@
 import { db } from "@/config/firebase";
 import { bgImages } from "@/utils/backgrounds";
 import { deleteDoc, doc } from "firebase/firestore";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { RxUpdate } from "react-icons/rx";
 
@@ -21,12 +20,10 @@ interface deletedNote {
 }
 
 const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
-  const router = useRouter();
   const [showBackgrounds, setShowBackgrounds] = useState(false);
 
   const deleteHandler = async ({ id, title }: deletedNote) => {
     const deletedNote = await deleteDoc(doc(db, "notes", id));
-    router.refresh();
   };
 
   return (
