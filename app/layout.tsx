@@ -6,6 +6,7 @@ import Landing from "./Landing";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { SessionProvider } from "@/components/SessionProvider";
+import { ModalContextProvider } from "@/context/ModalContext";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -32,22 +33,24 @@ export default async function RootLayout({
     <html className="overflow-hidden" lang="en">
       <body className={`${poppins.variable} font-poppins bg-[#202124]`}>
         <SessionProvider session={session}>
-          {session?.user ? (
-            <>
-              {/* @ts-ignore */}
-              <Navbar />
-              <div className="flex">
-                <div>
-                  <Sidebar />
+          <ModalContextProvider>
+            {session?.user ? (
+              <>
+                {/* @ts-ignore */}
+                <Navbar />
+                <div className="flex">
+                  <div>
+                    <Sidebar />
+                  </div>
+                  <div className="flex-1">{children}</div>
                 </div>
-                <div className="flex-1">{children}</div>
-              </div>
-            </>
-          ) : (
-            <>
-              <Landing />
-            </>
-          )}
+              </>
+            ) : (
+              <>
+                <Landing />
+              </>
+            )}
+          </ModalContextProvider>
         </SessionProvider>
       </body>
     </html>

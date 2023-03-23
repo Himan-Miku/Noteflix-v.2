@@ -32,7 +32,11 @@ const Note = ({ id, data }: noteProps) => {
       }}
       className={`inline-block p-3 mb-4 w-full h-max border border-1 border-[#575B5F] rounded-lg`}
     >
-      <Link href={`${id}`}>
+      <button
+        type="button"
+        onClick={() => console.log("clicked")}
+        className="note-btn"
+      >
         <div className="px-2">
           <h3 className="text-[#f5f5f5] font-semibold text-lg">{data.title}</h3>
         </div>
@@ -41,7 +45,7 @@ const Note = ({ id, data }: noteProps) => {
             {data.content}
           </p>
         </div>
-      </Link>
+      </button>
       <div>
         <Options
           id={id}

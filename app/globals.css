@@ -8,6 +8,11 @@
   margin: 0;
 }
 
+.note-btn {
+  all: unset;
+  cursor: pointer;
+}
+
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 10px;
