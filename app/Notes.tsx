@@ -14,6 +14,12 @@ export interface iNote {
   bgImage?: string;
 }
 
+export interface noteData {
+  title: string;
+  content: string;
+  bgImage?: string;
+}
+
 export default function Notes() {
   const [parent, enableAnimations] = useAutoAnimate();
   const q = query(collection(db, "notes"), orderBy("createdAt"));
@@ -24,7 +30,7 @@ export default function Notes() {
     <NoteContextProvider>
       <div ref={parent} className="notes-columns gap-4 p-4 my-8">
         {notes?.docs.map((note) => (
-          <Note key={note.id} id={note.id} data={note.data()} />
+          <Note key={note.id} id={note.id} data={note.data() as noteData} />
         ))}
         <Modal />
       </div>

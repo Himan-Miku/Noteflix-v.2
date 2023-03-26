@@ -1,36 +1,64 @@
 "use client";
 
+import { db } from "@/config/firebase";
 import { iModalContext, modalContext } from "@/context/ModalContext";
 import { iNoteContext, noteContext } from "@/context/NoteContext";
 import { Dialog, Transition } from "@headlessui/react";
-import React, { ChangeEvent, Fragment, useState } from "react";
+import { doc, updateDoc } from "firebase/firestore";
+import React, {
+  ChangeEvent,
+  Fragment,
+  useState,
+  useEffect,
+  FormEvent,
+} from "react";
+
+export interface NoteInput {
+  title?: string;
+  content?: string;
+}
 
 const Modal = () => {
   const { isOpen, closeModal } = modalContext() as iModalContext;
-  const { notedata } = noteContext() as iNoteContext;
+  const { notedata, id } = noteContext() as iNoteContext;
   const [rows, setRows] = useState(10);
-  const [inputs, setInputs] = useState({
-    title: notedata?.title,
-    content: notedata?.content,
+  const [input, setInput] = useState<NoteInput>({
+    title: notedata?.title || "",
+    content: notedata?.content || "",
   });
 
-  console.log("title : ", inputs.title);
-  console.log("content: ", inputs.content);
+  useEffect(() => {
+    setInput({
+      title: notedata?.title || "",
+      content: notedata?.content || "",
+    });
+  }, [notedata, isOpen]);
+
+  console.log("title : ", input.title);
+  console.log("content: ", input.content);
+  console.log("id: ", id);
 
   const handleTextAreaInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setInputs({ ...inputs, content: e.target.value });
-    console.log(e.target.scrollHeight, " => height");
-    console.log(e.target.value.length, " => inputLength");
+    setInput({ ...input, content: e.target.value });
+  };
 
-    if (e.target.scrollHeight <= 64 || inputs.content.length <= 29) setRows(1);
-    else if (e.target.scrollHeight === 88 || inputs.content.length <= 58)
-      setRows(2);
-    else if (e.target.scrollHeight === 112 || inputs.content.length <= 87)
-      setRows(3);
-    else if (e.target.scrollHeight === 136 || inputs.content.length <= 116)
-      setRows(4);
-    else if (e.target.scrollHeight >= 160 || inputs.content.length >= 145)
-      setRows(5);
+  const handleClose = () => {
+    closeModal();
+    setInput({
+      title: "",
+      content: "",
+    });
+  };
+
+  const handleSubmitChanges = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    await updateDoc(doc(db, "notes", id!), {
+      title: input.title,
+      content: input.content,
+    });
+
+    closeModal();
   };
 
   return (
@@ -67,39 +95,47 @@ const Modal = () => {
                     backgroundPositionY: "bottom",
                     backgroundSize: "cover",
                   }}
-                  className="w-full max-w-md transform overflow-hidden rounded-2xl p-6 text-left align-middle shadow-xl transition-all"
+                  className="w-full max-w-md transform overflow-hidden rounded-2xl p-2 text-left align-middle shadow-xl transition-all"
                 >
-                  <Dialog.Title as="h3">
-                    <input
-                      className="bg-transparent px-4 py-2 focus:outline-none w-full text-white font-semibold placeholder:font-semibold caret-white"
-                      placeholder="Title"
-                      value={notedata?.title}
-                      onChange={(e) =>
-                        setInputs({ ...inputs, title: e.target.value })
-                      }
-                      required
-                    />
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <textarea
-                      className={`bg-transparent px-4 py-2 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden h-auto max-h-80 text-white`}
-                      placeholder="Take a note..."
-                      value={notedata?.content}
-                      onChange={(e) => handleTextAreaInput(e)}
-                      rows={rows}
-                      required
-                    />
-                  </div>
+                  <form onSubmit={handleSubmitChanges}>
+                    <div>
+                      <input
+                        className="bg-transparent px-4 py-2 focus:outline-none w-full text-white font-semibold placeholder:font-semibold caret-white"
+                        placeholder="Title"
+                        value={input.title}
+                        onChange={(e) =>
+                          setInput({ ...input, title: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+                    <div>
+                      <textarea
+                        className={`bg-transparent px-4 py-2 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-auto h-auto max-h-80 text-white scrollbar-hide`}
+                        placeholder="Take a note..."
+                        value={input.content}
+                        onChange={(e) => handleTextAreaInput(e)}
+                        rows={rows}
+                        required
+                      />
+                    </div>
 
-                  <div className="mt-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      close
-                    </button>
-                  </div>
+                    <div className="mt-4 px-4 pb-2">
+                      <button
+                        type="button"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        onClick={handleClose}
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="submit"
+                        className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </form>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

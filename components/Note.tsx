@@ -4,15 +4,16 @@ import { doc, DocumentData, updateDoc } from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { modalContext, iModalContext } from "@/context/ModalContext";
 import { iNoteContext, noteContext } from "@/context/NoteContext";
+import { noteData } from "@/app/Notes";
 
 interface noteProps {
   id: string;
-  data: DocumentData;
+  data: noteData;
 }
 
 const Note = ({ id, data }: noteProps) => {
   const { openModal } = modalContext() as iModalContext;
-  const { setNotedata } = noteContext() as iNoteContext;
+  const { setNotedata, setId } = noteContext() as iNoteContext;
 
   const bgImageFn = async (image: string) => {
     const noteImage = await updateDoc(doc(db, "notes", id), {
@@ -24,6 +25,7 @@ const Note = ({ id, data }: noteProps) => {
   const handleOnClick = () => {
     openModal();
     setNotedata(data);
+    setId(id);
   };
 
   return (
