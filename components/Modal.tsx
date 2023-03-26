@@ -90,7 +90,7 @@ const Modal = () => {
               >
                 <Dialog.Panel
                   style={{
-                    backgroundImage: `url(${notedata?.bgImage})`,
+                    backgroundImage: `url(${notedata?.opImage})`,
                     backgroundPositionX: "right",
                     backgroundPositionY: "bottom",
                     backgroundSize: "cover",

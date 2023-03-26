@@ -1,6 +1,6 @@
 "use client";
 import Options from "./Options";
-import { doc, DocumentData, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { modalContext, iModalContext } from "@/context/ModalContext";
 import { iNoteContext, noteContext } from "@/context/NoteContext";
@@ -15,9 +15,10 @@ const Note = ({ id, data }: noteProps) => {
   const { openModal } = modalContext() as iModalContext;
   const { setNotedata, setId } = noteContext() as iNoteContext;
 
-  const bgImageFn = async (image: string) => {
+  const bgImageFn = async (image: string, opImage: string) => {
     const noteImage = await updateDoc(doc(db, "notes", id), {
       bgImage: image,
+      opImage: opImage,
     });
     console.log(noteImage);
   };

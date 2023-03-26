@@ -18,6 +18,7 @@ export interface noteData {
   title: string;
   content: string;
   bgImage?: string;
+  opImage?: string;
 }
 
 export default function Notes() {

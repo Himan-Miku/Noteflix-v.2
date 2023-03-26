@@ -3,7 +3,7 @@ export const bgImages = [
     imageId: 1,
     svgSrc: "",
     coverPic: "/default.png",
-    opImage: "/-op.svg",
+    opImage: "/default-op.svg",
   },
   {
     imageId: 2,

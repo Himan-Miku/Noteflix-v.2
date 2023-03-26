@@ -11,7 +11,7 @@ interface notesProps {
   content: string;
   title: string;
   bgImage?: string;
-  bgImageFn: (image: string) => void;
+  bgImageFn: (image: string, opImage: string) => void;
 }
 
 interface deletedNote {
@@ -78,7 +78,7 @@ const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
                 <div
                   key={image.imageId}
                   className="rounded-full w-9 h-9 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
-                  onClick={() => bgImageFn(image.svgSrc)}
+                  onClick={() => bgImageFn(image.svgSrc, image.opImage)}
                 >
                   <img src={image.coverPic} className="w-[100%] rounded-full" />
                 </div>
@@ -90,7 +90,7 @@ const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
                 <div
                   key={image.imageId}
                   className="rounded-full w-9 h-9 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
-                  onClick={() => bgImageFn(image.svgSrc)}
+                  onClick={() => bgImageFn(image.svgSrc, image.opImage)}
                 >
                   <img src={image.coverPic} className="w-[100%] rounded-full" />
                 </div>
