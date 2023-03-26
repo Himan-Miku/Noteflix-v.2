@@ -1,5 +1,5 @@
 "use client";
-import { DocumentData } from "firebase/firestore";
+import { noteData } from "@/app/Notes";
 import React, {
   Dispatch,
   SetStateAction,
@@ -13,17 +13,20 @@ type Props = {
 };
 
 export interface iNoteContext {
-  notedata?: DocumentData;
-  setNotedata: Dispatch<SetStateAction<DocumentData | undefined>>;
+  notedata: noteData | null;
+  setNotedata: Dispatch<SetStateAction<noteData | null>>;
+  id?: string;
+  setId: Dispatch<SetStateAction<string | undefined>>;
 }
 
 const NoteContext = createContext<iNoteContext | null>(null);
 
 export const NoteContextProvider = ({ children }: Props) => {
-  const [notedata, setNotedata] = useState<DocumentData>();
+  const [notedata, setNotedata] = useState<noteData | null>(null);
+  const [id, setId] = useState<string>();
 
   return (
-    <NoteContext.Provider value={{ notedata, setNotedata }}>
+    <NoteContext.Provider value={{ notedata, setNotedata, id, setId }}>
       {children}
     </NoteContext.Provider>
   );
