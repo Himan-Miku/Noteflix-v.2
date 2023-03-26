@@ -54,6 +54,7 @@ const Form = () => {
       content: inputs.content,
       createdAt: serverTimestamp(),
       userId: session?.user?.email,
+      opImage: "/default-op.svg",
     });
 
     setInputs({
