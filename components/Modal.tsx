@@ -8,11 +8,14 @@ import React, { ChangeEvent, Fragment, useState } from "react";
 const Modal = () => {
   const { isOpen, closeModal } = modalContext() as iModalContext;
   const { notedata } = noteContext() as iNoteContext;
-  const [rows, setRows] = useState(1);
+  const [rows, setRows] = useState(10);
   const [inputs, setInputs] = useState({
     title: notedata?.title,
     content: notedata?.content,
   });
+
+  console.log("title : ", inputs.title);
+  console.log("content: ", inputs.content);
 
   const handleTextAreaInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputs({ ...inputs, content: e.target.value });
@@ -70,7 +73,7 @@ const Modal = () => {
                     <input
                       className="bg-transparent px-4 py-2 focus:outline-none w-full text-white font-semibold placeholder:font-semibold caret-white"
                       placeholder="Title"
-                      value={inputs.title}
+                      value={notedata?.title}
                       onChange={(e) =>
                         setInputs({ ...inputs, title: e.target.value })
                       }
@@ -79,12 +82,11 @@ const Modal = () => {
                   </Dialog.Title>
                   <div className="mt-2">
                     <textarea
-                      className={`bg-[#202124] px-4 py-2 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden h-auto max-h-40 text-white`}
+                      className={`bg-transparent px-4 py-2 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden h-auto max-h-80 text-white`}
                       placeholder="Take a note..."
-                      value={inputs.content}
+                      value={notedata?.content}
                       onChange={(e) => handleTextAreaInput(e)}
                       rows={rows}
-                      autoFocus
                       required
                     />
                   </div>

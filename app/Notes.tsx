@@ -20,10 +20,6 @@ export default function Notes() {
 
   const [notes] = useCollection(q);
 
-  // notes?.docs.forEach((doc) => {
-  //   console.log(doc.id, " => ", doc.data());
-  // });
-
   return (
     <NoteContextProvider>
       <div ref={parent} className="notes-columns gap-4 p-4 my-8">
