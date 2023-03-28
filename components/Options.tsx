@@ -2,7 +2,7 @@
 
 import { db } from "@/config/firebase";
 import { bgImages } from "@/utils/backgrounds";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
 import { RxUpdate } from "react-icons/rx";
 
@@ -14,23 +14,28 @@ interface notesProps {
   bgImageFn: (image: string, opImage: string) => void;
 }
 
-interface deletedNote {
+interface fNote {
   id: string;
-  title: string;
 }
 
 const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
   const [showBackgrounds, setShowBackgrounds] = useState(false);
 
-  const deleteHandler = async ({ id, title }: deletedNote) => {
+  const deleteHandler = async ({ id }: fNote) => {
     const deletedNote = await deleteDoc(doc(db, "notes", id));
+  };
+
+  const handleArchive = async ({ id }: fNote) => {
+    await updateDoc(doc(db, "notes", id), {
+      archived: true,
+    });
   };
 
   return (
     <div>
       <button
         className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full"
-        onClick={() => deleteHandler({ id, title })}
+        onClick={() => deleteHandler({ id })}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +56,10 @@ const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
           width={20}
         />
       </button>
-      <button className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full">
+      <button
+        onClick={() => handleArchive({ id })}
+        className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full"
+      >
         <img
           src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj4KICA8cGF0aCBkPSJNMjAuNTQgNS4yM2wtMS4zOS0xLjY4QzE4Ljg4IDMuMjEgMTguNDcgMyAxOCAzSDZjLS40NyAwLS44OC4yMS0xLjE2LjU1TDMuNDYgNS4yM0MzLjE3IDUuNTcgMyA2LjAyIDMgNi41VjE5YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWNi41YzAtLjQ4LS4xNy0uOTMtLjQ2LTEuMjd6TTYuMjQgNWgxMS41MmwuODMgMUg1LjQybC44Mi0xek01IDE5VjhoMTR2MTFINXptMTEtNS41bC00IDQtNC00IDEuNDEtMS40MUwxMSAxMy42N1YxMGgydjMuNjdsMS41OS0xLjU5TDE2IDEzLjV6Ii8+Cjwvc3ZnPgo="
           alt="archive"

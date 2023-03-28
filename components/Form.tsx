@@ -55,6 +55,7 @@ const Form = () => {
       createdAt: serverTimestamp(),
       userId: session?.user?.email,
       opImage: "/default-op.svg",
+      archived: false,
     });
 
     setInputs({
