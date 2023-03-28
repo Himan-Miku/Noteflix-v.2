@@ -110,7 +110,7 @@ const Form = () => {
           className={`bg-[#202124] px-4 py-2 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-hidden h-auto max-h-40 text-white`}
           placeholder="Take a note..."
           value={inputs.content}
-          onChange={(e) => handleTextAreaInput(e)}
+          onChange={handleTextAreaInput}
           rows={rows}
           autoFocus
           required

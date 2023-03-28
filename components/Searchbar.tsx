@@ -2,7 +2,7 @@
 
 import { db } from "@/config/firebase";
 import { query, collection, orderBy, DocumentData } from "firebase/firestore";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { searchContext, tSearchC } from "@/context/SearchContext";
 
