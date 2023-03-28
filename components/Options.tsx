@@ -72,13 +72,16 @@ const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
           />
         </button>
         {showBackgrounds && (
-          <div className="absolute -right-56 top-11 rounded-lg box-shadow-color bg-[#202124] p-4">
+          <div className="absolute -right-40 top-10 rounded-lg box-shadow-color bg-[#202124] p-4">
             <div className="flex justify-center items-center gap-1 mb-2">
               {bgImages.slice(0, 10).map((image) => (
                 <div
                   key={image.imageId}
                   className="rounded-full w-9 h-9 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
-                  onClick={() => bgImageFn(image.svgSrc, image.opImage)}
+                  onClick={() => {
+                    bgImageFn(image.svgSrc, image.opImage);
+                    setShowBackgrounds(false);
+                  }}
                 >
                   <img src={image.coverPic} className="w-[100%] rounded-full" />
                 </div>
@@ -90,7 +93,10 @@ const Options = ({ content, title, bgImage, id, bgImageFn }: notesProps) => {
                 <div
                   key={image.imageId}
                   className="rounded-full w-9 h-9 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
-                  onClick={() => bgImageFn(image.svgSrc, image.opImage)}
+                  onClick={() => {
+                    bgImageFn(image.svgSrc, image.opImage);
+                    setShowBackgrounds(false);
+                  }}
                 >
                   <img src={image.coverPic} className="w-[100%] rounded-full" />
                 </div>
