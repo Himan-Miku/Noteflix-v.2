@@ -38,10 +38,6 @@ const Modal = () => {
     });
   }, [notedata, isOpen]);
 
-  console.log("title : ", input.title);
-  console.log("content: ", input.content);
-  console.log("id: ", id);
-
   const handleTextAreaInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInput({ ...input, content: e.target.value });
   };

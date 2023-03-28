@@ -1,7 +1,6 @@
 "use client";
 
 import { db } from "@/config/firebase";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { query, collection, orderBy, DocumentData } from "firebase/firestore";
 import { ChangeEvent, useState } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -9,7 +8,6 @@ import { searchContext, tSearchC } from "@/context/SearchContext";
 
 const Searchbar = () => {
   const { setFilteredNotes } = searchContext() as tSearchC;
-  const [parent, enableAnimations] = useAutoAnimate();
   const q = query(collection(db, "notes"), orderBy("createdAt"));
   const [notes] = useCollection(q);
 
@@ -18,6 +16,7 @@ const Searchbar = () => {
     const filter = notes?.docs.filter((note) => {
       return note.data().title.toLowerCase().includes(searchWord.toLowerCase());
     });
+
     setFilteredNotes(filter);
   };
 

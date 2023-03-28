@@ -32,10 +32,14 @@ export default function Notes() {
   return (
     <NoteContextProvider>
       <div ref={parent} className="notes-columns gap-4 p-4 my-8">
-        {filteredNotes?.length != 0 &&
-          filteredNotes?.map((note) => (
-            <Note key={note.id} id={note.id} data={note.data() as noteData} />
-          ))}
+        {filteredNotes
+          ? filteredNotes?.length != 0 &&
+            filteredNotes?.map((note) => (
+              <Note key={note.id} id={note.id} data={note.data() as noteData} />
+            ))
+          : notes?.docs.map((note) => (
+              <Note key={note.id} id={note.id} data={note.data() as noteData} />
+            ))}
         <Modal />
       </div>
     </NoteContextProvider>
