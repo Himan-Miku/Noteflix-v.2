@@ -11,6 +11,7 @@
 .note-btn {
   all: unset;
   cursor: pointer;
+  word-break: break-all;
 }
 
 @layer utilities {
