@@ -44,6 +44,10 @@ const Searchbar = () => {
         className="w-full px-2 bg-[#525355] text-[#E9E9E9] placeholder-[#E9E9E9] outline-none"
         type="text"
         onChange={handleChange}
+        onBlur={(e) => {
+          e.target.value = "";
+          setFilteredNotes(null);
+        }}
       />
       <button className="btn btn-ghost btn-circle h-[2.5rem]">
         <svg
