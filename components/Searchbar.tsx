@@ -1,7 +1,7 @@
 "use client";
 
 import { db } from "@/config/firebase";
-import { query, collection, orderBy, DocumentData } from "firebase/firestore";
+import { query, collection, orderBy } from "firebase/firestore";
 import { ChangeEvent } from "react";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { searchContext, tSearchC } from "@/context/SearchContext";
@@ -17,7 +17,11 @@ const Searchbar = () => {
       return note.data().title.toLowerCase().includes(searchWord.toLowerCase());
     });
 
-    setFilteredNotes(filter);
+    if (searchWord === "") {
+      setFilteredNotes(null);
+    } else {
+      setFilteredNotes(filter);
+    }
   };
 
   return (

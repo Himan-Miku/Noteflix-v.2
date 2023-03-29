@@ -14,14 +14,14 @@ type Props = {
 };
 
 export type tSearchC = {
-  filteredNotes: DocumentData[] | undefined;
-  setFilteredNotes: Dispatch<SetStateAction<DocumentData[] | undefined>>;
+  filteredNotes: DocumentData[] | undefined | null;
+  setFilteredNotes: Dispatch<SetStateAction<DocumentData[] | undefined | null>>;
 };
 
 const SearchContext = createContext<tSearchC | null>(null);
 
 export const SearchContextProvider = ({ children }: Props) => {
-  const [filteredNotes, setFilteredNotes] = useState<DocumentData[]>();
+  const [filteredNotes, setFilteredNotes] = useState<DocumentData[] | null>();
 
   return (
     <SearchContext.Provider value={{ filteredNotes, setFilteredNotes }}>
