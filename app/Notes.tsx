@@ -1,7 +1,7 @@
 "use client";
 import { db } from "@/config/firebase";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { collection, query, orderBy } from "firebase/firestore";
+import { collection, query, orderBy, where } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import Note from "@/components/Note";
 import { NoteContextProvider } from "@/context/NoteContext";
@@ -24,9 +24,16 @@ export interface noteData {
 
 export default function Notes() {
   const [parent, enableAnimations] = useAutoAnimate();
-  const q = query(collection(db, "notes"), orderBy("createdAt"));
+  const q = query(
+    collection(db, "notes"),
+    orderBy("createdAt"),
+    where("archived", "==", false)
+  );
 
-  const [notes] = useCollection(q);
+  const [notes, loading, error] = useCollection(q);
+
+  console.log("error from notes : ", error);
+  console.log("notes from notes : ", notes);
 
   return (
     <NoteContextProvider>
