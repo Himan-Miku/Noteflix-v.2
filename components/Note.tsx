@@ -56,6 +56,7 @@ const Note = ({ id, data }: noteProps) => {
           content={data.content}
           bgImage={data.bgImage!}
           bgImageFn={bgImageFn}
+          status={data.archived}
         />
       </div>
     </div>
