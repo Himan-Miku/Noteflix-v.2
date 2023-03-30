@@ -19,6 +19,7 @@ export interface noteData {
   content: string;
   bgImage?: string;
   opImage?: string;
+  archived: boolean;
 }
 
 export default function Notes() {
