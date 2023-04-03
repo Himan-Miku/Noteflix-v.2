@@ -1,6 +1,7 @@
 "use client";
 
 import { db } from "@/config/firebase";
+import { alertContext, tAlertC } from "@/context/AlertContext";
 import { bgImages } from "@/utils/backgrounds";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { useState } from "react";
@@ -27,6 +28,8 @@ const Options = ({
   bgImageFn,
   status,
 }: notesProps) => {
+  const { setAlert } = alertContext() as tAlertC;
+
   const [showBackgrounds, setShowBackgrounds] = useState(false);
 
   const deleteHandler = async ({ id }: fNote) => {
@@ -84,7 +87,10 @@ const Options = ({
         </button>
       ) : (
         <button
-          onClick={() => handleArchive({ id })}
+          onClick={() => {
+            handleArchive({ id });
+            setAlert(true);
+          }}
           className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full"
         >
           <img
