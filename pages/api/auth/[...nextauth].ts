@@ -1,10 +1,8 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import { FirestoreAdapter } from "@next-auth/firebase-adapter";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
-  adapter: FirestoreAdapter(),
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     GoogleProvider({
