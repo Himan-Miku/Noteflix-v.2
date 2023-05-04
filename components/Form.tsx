@@ -74,8 +74,8 @@ const Form = () => {
 
   const handleTextAreaInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputs({ ...inputs, content: e.target.value });
-    console.log(e.target.scrollHeight, " => height");
-    console.log(e.target.value.length, " => inputLength");
+    // console.log(e.target.scrollHeight, " => height");
+    // console.log(e.target.value.length, " => inputLength");
 
     if (e.target.scrollHeight <= 64 || inputs.content.length <= 29) setRows(1);
     else if (e.target.scrollHeight === 88 || inputs.content.length <= 58)

@@ -6,6 +6,7 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import Note from "@/components/Note";
 import { NoteContextProvider } from "@/context/NoteContext";
 import Modal from "@/components/Modal";
+import { useSession } from "next-auth/react";
 
 export interface iNote {
   title: string;
@@ -23,10 +24,14 @@ export interface noteData {
 }
 
 export default function Notes() {
+  const { data: session } = useSession();
   const [parent, enableAnimations] = useAutoAnimate();
+
+  const userEmail = session?.user?.email || "";
   const q = query(
     collection(db, "notes"),
     orderBy("createdAt"),
+    where("userId", "==", userEmail),
     where("archived", "==", false)
   );
 
