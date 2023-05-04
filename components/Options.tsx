@@ -146,9 +146,6 @@ const Options = ({
             </div>
           </div>
         )}
-        <button className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full">
-          <RxUpdate fontSize={"1.225rem"} />
-        </button>
       </div>
     </div>
   );
