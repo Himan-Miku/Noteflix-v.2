@@ -1,10 +1,29 @@
 "use client";
 
+import { db } from "@/config/firebase";
 import { alertContext, tAlertC } from "@/context/AlertContext";
+import { LabelsStore } from "@/context/LabelsContext";
+import { collection, onSnapshot, query } from "firebase/firestore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 
-const sideBar = [
+export type LabelsData = {
+  id: string;
+  title: string;
+  path: string;
+  svgPath: JSX.Element;
+};
+type LabelsDataWithoutID = {
+  labelName: string;
+};
+
+const sideBar: {
+  id?: string;
+  title: string;
+  path: string;
+  svgPath?: JSX.Element;
+}[] = [
   {
     title: "Notes",
     path: "/",
@@ -30,16 +49,43 @@ const sideBar = [
 
 const Sidebar = () => {
   const pathname = usePathname();
-
   const { setAlert, alert } = alertContext() as tAlertC;
+  const { labels, setLabels } = LabelsStore();
+
+  const q = query(collection(db, "labels"));
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      let updatedResults: Array<LabelsData> = [];
+
+      snapshot.docs.forEach((doc) => {
+        const actualData = doc.data() as LabelsDataWithoutID;
+        const data = {
+          id: doc.id,
+          title: actualData.labelName,
+          path: `/labels/${actualData.labelName}`,
+          svgPath: (
+            <path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16zM16 17H5V7h11l3.55 5L16 17z"></path>
+          ),
+        };
+        updatedResults.push(data);
+      });
+
+      setLabels(updatedResults);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <>
-      <div className="cal-h w-72 py-2 overflow-y-auto bg-[#202124] relative">
+      <div className="cal-h w-72 py-2 overflow-y-auto bg-[#202124] relative scrollbar">
         {sideBar.map((item, index) => (
           <Link key={index} href={item.path}>
             <div
-              className={`group flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none px-4 py-3 text-[1.05rem] cursor-pointer ${
+              className={`group w-64 flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none px-4 py-3 text-[1.05rem] cursor-pointer ${
                 pathname === item.path
                   ? "bg-none bg-[#9f4040a7]"
                   : "bg-none hover:text-gray-300 hover:bg-[#28292C]"
@@ -60,6 +106,54 @@ const Sidebar = () => {
             </div>
           </Link>
         ))}
+        {labels.map((item, index) => (
+          <Link key={index} href={item.path}>
+            <div
+              className={`group w-64 flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none px-4 py-3 text-[1.05rem] cursor-pointer ${
+                pathname === item.path
+                  ? "bg-none bg-[#9f4040a7]"
+                  : "bg-none hover:text-gray-300 hover:bg-[#28292C]"
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className={`${
+                  pathname === item.path ? "fill-gray-300" : "fill-gray-500"
+                }`}
+              >
+                {item.svgPath}
+              </svg>
+              <p>{item.title}</p>
+            </div>
+          </Link>
+        ))}
+        {labels && labels.length > 0 && (
+          <Link href={`/labels`}>
+            <div
+              className={`group w-64 flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none px-4 py-3 text-[1.05rem] cursor-pointer ${
+                pathname === "/labels"
+                  ? "bg-none bg-[#9f4040a7]"
+                  : "bg-none hover:text-gray-300 hover:bg-[#28292C]"
+              }`}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                className={`${
+                  pathname === "/labels" ? "fill-gray-300" : "fill-gray-500"
+                }`}
+              >
+                <path d="M20.41 4.94l-1.35-1.35c-.78-.78-2.05-.78-2.83 0L13.4 6.41 3 16.82V21h4.18l10.46-10.46 2.77-2.77c.79-.78.79-2.05 0-2.83zm-14 14.12L5 19v-1.36l9.82-9.82 1.41 1.41-9.82 9.83z"></path>
+              </svg>
+              <p>Edit labels</p>
+            </div>
+          </Link>
+        )}
         {alert && (
           <div
             id="alert-5"
