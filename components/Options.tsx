@@ -1,11 +1,21 @@
 "use client";
 
+import { LabelsData } from "@/app/Sidebar";
 import { db } from "@/config/firebase";
 import { alertContext, tAlertC } from "@/context/AlertContext";
+import { LabelsStore } from "@/context/LabelsContext";
 import { bgImages } from "@/utils/backgrounds";
-import { deleteDoc, doc, updateDoc } from "firebase/firestore";
-import { useState } from "react";
-import { RxUpdate } from "react-icons/rx";
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  deleteDoc,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import { ChangeEvent, useState } from "react";
+import { MdLabelOutline } from "react-icons/md";
+import { AiOutlinePlus } from "react-icons/ai";
 
 interface notesProps {
   id: string;
@@ -20,20 +30,18 @@ interface fNote {
   id: string;
 }
 
-const Options = ({
-  content,
-  title,
-  bgImage,
-  id,
-  bgImageFn,
-  status,
-}: notesProps) => {
+const Options = ({ id, bgImageFn, status }: notesProps) => {
   const { setAlert } = alertContext() as tAlertC;
 
   const [showBackgrounds, setShowBackgrounds] = useState(false);
+  const [showLabels, setShowLabels] = useState(false);
+  const [labelName, setLabelName] = useState("");
+  const { labels, setLabels } = LabelsStore();
+  const [filteredLabels, setFilteredLabels] =
+    useState<Array<LabelsData>>(labels);
 
   const deleteHandler = async ({ id }: fNote) => {
-    const deletedNote = await deleteDoc(doc(db, "notes", id));
+    await deleteDoc(doc(db, "notes", id));
   };
 
   const handleArchive = async ({ id }: fNote) => {
@@ -47,6 +55,32 @@ const Options = ({
       archived: false,
     });
   };
+
+  const searchLabels = (labelName: string) => {
+    const filtered = labels.filter((label) =>
+      label.title.toLowerCase().includes(labelName.toLowerCase())
+    );
+    setFilteredLabels(filtered);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const labelName = e.target.value;
+    setLabelName(labelName);
+    searchLabels(labelName);
+  };
+
+  const createNewLabel = async (labelName: string, id: string) => {
+    await addDoc(collection(db, "labels"), {
+      labelName,
+    });
+    await updateDoc(doc(db, "notes", id), {
+      labels: arrayUnion(labelName),
+    });
+
+    setShowLabels(false);
+    setLabelName("");
+  };
+  const toggleLabel = (label: string) => {};
 
   return (
     <div>
@@ -146,6 +180,51 @@ const Options = ({
             </div>
           </div>
         )}
+        <div className="relative inline-block">
+          <button
+            className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full"
+            onClick={() => setShowLabels(!showLabels)}
+          >
+            <MdLabelOutline fontSize={"1.2rem"} />
+          </button>
+          {showLabels && (
+            <div className="absolute bg-[#733536] border-[#202124] text-white rounded py-2 px-3 z-20 flex flex-col justify-center gap-3">
+              <div className="flex flex-col gap-2">
+                <label className="font-semibold" htmlFor="labelName">
+                  Label Note :
+                </label>
+                <input
+                  type="text"
+                  id="labelName"
+                  placeholder="search labels"
+                  className="bg-[#202124] outline-none px-2 py-1 caret-gray-400 rounded-md"
+                  value={labelName}
+                  onChange={handleChange}
+                />
+                <div>
+                  {filteredLabels.slice(0, 5).map((label, index) => (
+                    <div className="flex gap-2 items-center" key={index}>
+                      <input
+                        type="checkbox"
+                        onChange={() => toggleLabel(label.id)}
+                      />
+                      <label>{label.title}</label>
+                    </div>
+                  ))}
+                </div>
+                {labelName.length > 0 && (
+                  <div
+                    className="flex gap-2 items-center cursor-pointer w-fit"
+                    onClick={() => createNewLabel(labelName, id)}
+                  >
+                    <AiOutlinePlus />
+                    <h5>Create "{labelName}"</h5>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
