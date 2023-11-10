@@ -5,6 +5,7 @@ import { db } from "@/config/firebase";
 import { modalContext, iModalContext } from "@/context/ModalContext";
 import { iNoteContext, noteContext } from "@/context/NoteContext";
 import { noteData } from "@/app/Notes";
+import LabelItem from "./LabelItem";
 
 interface noteProps {
   id: string;
@@ -49,6 +50,13 @@ const Note = ({ id, data }: noteProps) => {
           </p>
         </div>
       </button>
+      {data.labels && data.labels.length > 0 && (
+        <div className="flex gap-3 p-2">
+          {data.labels?.map((labelName, index) => (
+            <LabelItem key={index} labelName={labelName} id={id} />
+          ))}
+        </div>
+      )}
       <div>
         <Options
           id={id}
