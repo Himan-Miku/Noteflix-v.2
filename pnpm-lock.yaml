@@ -22,6 +22,7 @@ specifiers:
   tailwind-scrollbar-hide: ^1.1.7
   tailwindcss: ^3.3.2
   typescript: 4.9.5
+  zustand: ^4.4.6
 
 dependencies:
   '@formkit/auto-animate': 1.0.0-beta.6
@@ -41,6 +42,7 @@ dependencies:
   react-icons: 4.8.0_react@18.2.0
   tailwind-scrollbar-hide: 1.1.7
   typescript: 4.9.5
+  zustand: 4.4.6_pmekkgnqduwlme35zpnqhenc34
 
 devDependencies:
   autoprefixer: 10.4.14_postcss@8.4.23
@@ -2986,6 +2988,14 @@ packages:
       picocolors: 1.0.0
     dev: true
 
+  /use-sync-external-store/1.2.0_react@18.2.0:
+    resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -3112,3 +3122,23 @@ packages:
     engines: {node: '>=10'}
     dev: false
     optional: true
+
+  /zustand/4.4.6_pmekkgnqduwlme35zpnqhenc34:
+    resolution: {integrity: sha512-Rb16eW55gqL4W2XZpJh0fnrATxYEG3Apl2gfHTyDSE965x/zxslTikpNch0JgNjJA9zK6gEFW8Fl6d1rTZaqgg==}
+    engines: {node: '>=12.7.0'}
+    peerDependencies:
+      '@types/react': '>=16.8'
+      immer: '>=9.0'
+      react: '>=16.8'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+    dependencies:
+      '@types/react': 18.0.28
+      react: 18.2.0
+      use-sync-external-store: 1.2.0_react@18.2.0
+    dev: false
