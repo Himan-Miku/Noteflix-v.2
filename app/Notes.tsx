@@ -16,11 +16,13 @@ export interface iNote {
 }
 
 export interface noteData {
+  id: string;
   title: string;
   content: string;
   bgImage?: string;
   opImage?: string;
   archived: boolean;
+  labels?: Array<string>;
 }
 
 export default function Notes() {
