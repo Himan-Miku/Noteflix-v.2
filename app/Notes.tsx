@@ -32,7 +32,6 @@ export default function Notes() {
   const userEmail = session?.user?.email || "";
   const q = query(
     collection(db, "notes"),
-    orderBy("createdAt"),
     where("userId", "==", userEmail),
     where("archived", "==", false)
   );
