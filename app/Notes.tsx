@@ -45,14 +45,50 @@ export default function Notes() {
 
   return (
     <NoteContextProvider>
-      <div ref={parent} className="notes-columns gap-4 p-4 my-8">
-        {queryy === ""
-          ? notes?.docs.map((note) => (
-              <Note key={note.id} id={note.id} data={note.data() as noteData} />
-            ))
-          : searchResults.map((result) => (
-              <Note key={result.id} id={result.id} data={result as noteData} />
-            ))}
+      <div
+        ref={parent}
+        className={`${
+          (queryy === "" && (!notes || notes.docs.length === 0)) ||
+          (queryy !== "" && searchResults.length === 0)
+            ? "flex justify-center items-center p-4 my-8"
+            : "notes-columns gap-4 p-4 my-8"
+        }`}
+      >
+        {queryy === "" && (!notes || notes.docs.length === 0) ? (
+          <div className="flex items-center justify-center gap-12 flex-col">
+            <h3 className="text-[#DA7370] text-2xl font-semibold">
+              No Notes Created 📝
+            </h3>
+            <img src="/empty.gif" alt="empty gif" className="w-64" />
+          </div>
+        ) : (
+          <>
+            {queryy === "" ? (
+              notes?.docs.map((note) => (
+                <Note
+                  key={note.id}
+                  id={note.id}
+                  data={note.data() as noteData}
+                />
+              ))
+            ) : searchResults.length > 0 ? (
+              searchResults.map((result) => (
+                <Note
+                  key={result.id}
+                  id={result.id}
+                  data={result as noteData}
+                />
+              ))
+            ) : (
+              <div className="flex items-center justify-center gap-12 flex-col">
+                <h3 className="text-[#DA7370] text-2xl font-semibold">
+                  No Results Found 🔍
+                </h3>
+                <img src="/search.gif" alt="search gif" className="w-64" />
+              </div>
+            )}
+          </>
+        )}
         <Modal />
       </div>
     </NoteContextProvider>
