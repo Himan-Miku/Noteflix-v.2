@@ -1,7 +1,18 @@
 "use client";
+import { labelDataWithoutID } from "@/components/Options";
 import { db } from "@/config/firebase";
 import { LabelsStore } from "@/context/LabelsContext";
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import {
+  addDoc,
+  arrayRemove,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  query,
+  where,
+  writeBatch,
+} from "firebase/firestore";
 import { ChangeEvent, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsCheckLg } from "react-icons/bs";
@@ -36,6 +47,18 @@ export default function LabelsPage() {
   };
 
   const deleteLabel = async (id: string) => {
+    const batch = writeBatch(db);
+    const docRef = doc(db, "labels", id);
+    let labelSnapshot = await getDoc(docRef);
+
+    let labelSnapData = labelSnapshot.data() as labelDataWithoutID;
+    labelSnapData.noteRefs.forEach((noteId) => {
+      const noteRef = doc(db, "notes", noteId);
+      batch.update(noteRef, {
+        labels: arrayRemove(labelSnapData.labelName),
+      });
+    });
+    await batch.commit();
     await deleteDoc(doc(db, "labels", id));
   };
 
