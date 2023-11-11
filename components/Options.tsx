@@ -11,7 +11,11 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
+  query,
   updateDoc,
+  where,
+  writeBatch,
 } from "firebase/firestore";
 import { ChangeEvent, useState } from "react";
 import { MdLabel, MdLabelOutline } from "react-icons/md";
@@ -27,6 +31,15 @@ interface notesProps {
 }
 
 interface fNote {
+  id: string;
+}
+
+interface labelDataWithoutID {
+  labelName: string;
+  noteRefs: Array<string>;
+}
+
+interface labelData extends labelDataWithoutID {
   id: string;
 }
 
@@ -81,6 +94,7 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
   const createNewLabel = async (labelName: string, id: string) => {
     await addDoc(collection(db, "labels"), {
       labelName,
+      noteRefs: arrayUnion(id),
     });
     await updateDoc(doc(db, "notes", id), {
       labels: arrayUnion(labelName),
@@ -101,6 +115,23 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
   };
 
   const addLabelsToNote = async (noteId: string, selectedLabels: string[]) => {
+    const batch = writeBatch(db);
+
+    let q = query(
+      collection(db, "labels"),
+      where("labelName", "in", selectedLabels)
+    );
+    let snapshot = await getDocs(q);
+
+    snapshot.docs.forEach((label) => {
+      const docRef = doc(db, "labels", label.id);
+      batch.update(docRef, {
+        noteRefs: arrayUnion(noteId),
+      });
+    });
+
+    await batch.commit();
+
     await updateDoc(doc(db, "notes", noteId), {
       labels: arrayUnion(...selectedLabels),
     });
