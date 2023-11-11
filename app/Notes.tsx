@@ -7,6 +7,7 @@ import Note from "@/components/Note";
 import { NoteContextProvider } from "@/context/NoteContext";
 import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
+import { AlgoliaStore } from "@/context/AlgoliaContext";
 
 export interface iNote {
   title: string;
@@ -26,8 +27,10 @@ export interface noteData {
 }
 
 export default function Notes() {
+  let renderingResults;
   const { data: session } = useSession();
   const [parent, enableAnimations] = useAutoAnimate();
+  const { searchResults, queryy } = AlgoliaStore();
 
   const userEmail = session?.user?.email || "";
   const q = query(
@@ -38,15 +41,26 @@ export default function Notes() {
 
   const [notes, loading, error] = useCollection(q);
 
+  if (queryy === "") {
+    renderingResults = notes?.docs;
+  } else {
+    renderingResults = searchResults;
+  }
+
   console.log("error from notes : ", error);
   console.log("notes from notes : ", notes);
 
   return (
     <NoteContextProvider>
       <div ref={parent} className="notes-columns gap-4 p-4 my-8">
-        {notes?.docs.map((note) => (
-          <Note key={note.id} id={note.id} data={note.data() as noteData} />
-        ))}
+        {queryy === ""
+          ? notes?.docs.map((note) => (
+              <Note key={note.id} id={note.id} data={note.data() as noteData} />
+            ))
+          : searchResults.map((result) => (
+              <Note key={result.id} id={result.id} data={result as noteData} />
+            ))}
+        {}
         <Modal />
       </div>
     </NoteContextProvider>
