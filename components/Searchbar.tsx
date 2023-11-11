@@ -37,15 +37,11 @@ const Searchbar = () => {
         filters: `userId:${userId}`,
       });
 
-      console.log("result from algolia: ", result);
-
       setSearchResults(result.hits as SearchResults);
     } catch (error) {
       console.error("Error Searching with Algolia : ", error);
     }
   }
-
-  console.log("Algolia SearchResults : ", searchResults);
 
   return (
     <>
