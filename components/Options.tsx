@@ -20,6 +20,7 @@ import {
 import { ChangeEvent, useState } from "react";
 import { MdLabel, MdLabelOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
+import { useSession } from "next-auth/react";
 
 interface notesProps {
   id: string;
@@ -51,6 +52,9 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
   const [labelName, setLabelName] = useState("");
   const { labels } = LabelsStore();
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+  const { data: session } = useSession();
+
+  let username = session?.user?.email || "";
 
   const [filteredLabels, setFilteredLabels] =
     useState<Array<LabelsData>>(labels);
@@ -95,6 +99,7 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
     await addDoc(collection(db, "labels"), {
       labelName,
       noteRefs: arrayUnion(id),
+      madeBy: username,
     });
     await updateDoc(doc(db, "notes", id), {
       labels: arrayUnion(labelName),
@@ -119,7 +124,8 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
 
     let q = query(
       collection(db, "labels"),
-      where("labelName", "in", selectedLabels)
+      where("labelName", "in", selectedLabels),
+      where("madeBy", "==", username)
     );
     let snapshot = await getDocs(q);
 
@@ -139,8 +145,6 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
     setSelectedLabels([]);
   };
 
-  console.log(selectedLabels);
-
   return (
     <div>
       <button
@@ -158,14 +162,14 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
           <path d="M9 8h2v9H9zm4 0h2v9h-2z"></path>
         </svg>
       </button>
-      <button className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full">
+      {/* <button className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full">
         <img
           src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj4KICA8cGF0aCBkPSJNMTMgOWgtMnYySDl2MmgydjJoMnYtMmgydi0yaC0yeiIvPgogIDxwYXRoIGQ9Ik0xOCAxN3YtNmMwLTMuMDctMS42My01LjY0LTQuNS02LjMyVjRjMC0uODMtLjY3LTEuNS0xLjUtMS41cy0xLjUuNjctMS41IDEuNXYuNjhDNy42NCA1LjM2IDYgNy45MiA2IDExdjZINHYyaDE2di0yaC0yem0tMiAwSDh2LTZjMC0yLjQ4IDEuNTEtNC41IDQtNC41czQgMi4wMiA0IDQuNXY2em0tNCA1YzEuMSAwIDItLjkgMi0yaC00YzAgMS4xLjkgMiAyIDJ6Ii8+Cjwvc3ZnPgo="
           alt="reminder"
           height={20}
           width={20}
         />
-      </button>
+      </button> */}
       {status ? (
         <button
           onClick={() => handleUnarchive({ id })}

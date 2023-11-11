@@ -17,10 +17,14 @@ import { ChangeEvent, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { BsCheckLg } from "react-icons/bs";
 import { MdDelete, MdLabel } from "react-icons/md";
+import { useSession } from "next-auth/react";
 
 export default function LabelsPage() {
   const [labelName, setLabelName] = useState("");
   const { labels } = LabelsStore();
+  const { data: session } = useSession();
+
+  let username = session?.user?.email || "";
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     let labelName = e.target.value;
@@ -38,6 +42,7 @@ export default function LabelsPage() {
 
       await addDoc(collection(db, "labels"), {
         labelName,
+        madeBy: username,
       });
 
       console.log("data sent");
