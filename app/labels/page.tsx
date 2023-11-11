@@ -54,7 +54,7 @@ export default function LabelsPage() {
           <div className="text-2xl font-semibold text-[#9F4040] pt-2">
             <h3>Edit Labels :</h3>
           </div>
-          <div className="flex gap-2 min-w-fit w-32 items-center px-2 py-1">
+          <div className="flex gap-2 min-w-fit items-center px-2 py-1">
             <div
               onClick={createNewLabel}
               className="rounded-full p-1 text-[#DA7370] hover:bg-[#2f3033]"
@@ -77,7 +77,7 @@ export default function LabelsPage() {
               <BsCheckLg />
             </div>
           </div>
-          <div className="w-[17.3rem] min-w-fit">
+          <div className="w-[18.3rem] min-w-fit">
             {labels &&
               labels.map((label, index) => (
                 <div
