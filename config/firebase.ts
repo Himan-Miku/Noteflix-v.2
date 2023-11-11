@@ -3,12 +3,12 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyBT7mAxpH33FU2R1oxN4ZWuUMNlqHJNpE0",
-  authDomain: "noteflix-621dd.firebaseapp.com",
-  projectId: "noteflix-621dd",
-  storageBucket: "noteflix-621dd.appspot.com",
-  messagingSenderId: "280443811042",
-  appId: "1:280443811042:web:a13f445df0399c6f749abb",
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
+  authDomain: "noteflix-9e44b.firebaseapp.com",
+  projectId: "noteflix-9e44b",
+  storageBucket: "noteflix-9e44b.appspot.com",
+  messagingSenderId: "827485663913",
+  appId: "1:827485663913:web:f4ce49f1331c3ad29fefb8",
 };
 
 const app = initializeApp(firebaseConfig);
