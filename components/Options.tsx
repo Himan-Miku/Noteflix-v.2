@@ -32,7 +32,7 @@ interface fNote {
 
 const Options = ({ id, bgImageFn, status }: notesProps) => {
   const { setAlert } = alertContext() as tAlertC;
-
+  const [isCreatable, setIsCreatable] = useState(true);
   const [showBackgrounds, setShowBackgrounds] = useState(false);
   const [showLabels, setShowLabels] = useState(false);
   const [labelName, setLabelName] = useState("");
@@ -65,6 +65,13 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const labelName = e.target.value;
+
+    let alreadyExists = filteredLabels.some(
+      (label) => labelName === label.title
+    );
+
+    alreadyExists ? setIsCreatable(false) : setIsCreatable(true);
+
     setLabelName(labelName);
     searchLabels(labelName);
   };
@@ -212,7 +219,7 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
                     </div>
                   ))}
                 </div>
-                {labelName.length > 0 && (
+                {labelName.length > 0 && isCreatable && (
                   <div
                     className="flex gap-2 items-center cursor-pointer w-fit"
                     onClick={() => createNewLabel(labelName, id)}
