@@ -36,7 +36,9 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
   const [showBackgrounds, setShowBackgrounds] = useState(false);
   const [showLabels, setShowLabels] = useState(false);
   const [labelName, setLabelName] = useState("");
-  const { labels, setLabels } = LabelsStore();
+  const { labels } = LabelsStore();
+  const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
+
   const [filteredLabels, setFilteredLabels] =
     useState<Array<LabelsData>>(labels);
 
@@ -87,7 +89,18 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
     setShowLabels(false);
     setLabelName("");
   };
-  const toggleLabel = (label: string) => {};
+
+  const handleCheckboxChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const label = e.target.value;
+
+    if (e.target.checked) {
+      setSelectedLabels((prevLabels) => [...prevLabels, label]);
+    } else {
+      setSelectedLabels((prevLabels) => prevLabels.filter((l) => l !== label));
+    }
+  };
+
+  console.log(selectedLabels);
 
   return (
     <div>
@@ -213,7 +226,8 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
                     <div className="flex gap-2 items-center" key={index}>
                       <input
                         type="checkbox"
-                        onChange={() => toggleLabel(label.id)}
+                        value={label.title}
+                        onChange={handleCheckboxChange}
                       />
                       <label>{label.title}</label>
                     </div>
