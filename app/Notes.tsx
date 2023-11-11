@@ -40,9 +40,6 @@ export default function Notes() {
 
   const [notes, loading, error] = useCollection(q);
 
-  console.log("error from notes : ", error);
-  console.log("notes from notes : ", notes);
-
   return (
     <NoteContextProvider>
       <div
