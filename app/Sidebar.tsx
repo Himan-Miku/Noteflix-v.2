@@ -3,7 +3,8 @@
 import { db } from "@/config/firebase";
 import { alertContext, tAlertC } from "@/context/AlertContext";
 import { LabelsStore } from "@/context/LabelsContext";
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
@@ -44,8 +45,11 @@ const Sidebar = () => {
   const pathname = usePathname();
   const { setAlert, alert } = alertContext() as tAlertC;
   const { labels, setLabels } = LabelsStore();
+  const { data: session } = useSession();
+  let user = session?.user?.email || "";
+  console.log(user);
 
-  const q = query(collection(db, "labels"));
+  const q = query(collection(db, "labels"), where("madeBy", "==", user));
 
   useEffect(() => {
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -65,12 +69,14 @@ const Sidebar = () => {
       });
 
       setLabels(updatedResults);
+      console.log("updatedResults: ", updatedResults);
     });
-
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [user]);
+
+  console.log("labels from sidebar: ", labels);
 
   return (
     <>
