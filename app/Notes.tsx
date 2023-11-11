@@ -27,7 +27,6 @@ export interface noteData {
 }
 
 export default function Notes() {
-  let renderingResults;
   const { data: session } = useSession();
   const [parent, enableAnimations] = useAutoAnimate();
   const { searchResults, queryy } = AlgoliaStore();
@@ -40,12 +39,6 @@ export default function Notes() {
   );
 
   const [notes, loading, error] = useCollection(q);
-
-  if (queryy === "") {
-    renderingResults = notes?.docs;
-  } else {
-    renderingResults = searchResults;
-  }
 
   console.log("error from notes : ", error);
   console.log("notes from notes : ", notes);
@@ -60,7 +53,6 @@ export default function Notes() {
           : searchResults.map((result) => (
               <Note key={result.id} id={result.id} data={result as noteData} />
             ))}
-        {}
         <Modal />
       </div>
     </NoteContextProvider>
