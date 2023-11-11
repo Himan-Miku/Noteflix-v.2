@@ -14,7 +14,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { ChangeEvent, useState } from "react";
-import { MdLabelOutline } from "react-icons/md";
+import { MdLabel, MdLabelOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 
 interface notesProps {
@@ -98,6 +98,14 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
     } else {
       setSelectedLabels((prevLabels) => prevLabels.filter((l) => l !== label));
     }
+  };
+
+  const addLabelsToNote = async (noteId: string, selectedLabels: string[]) => {
+    await updateDoc(doc(db, "notes", noteId), {
+      labels: arrayUnion(...selectedLabels),
+    });
+
+    setSelectedLabels([]);
   };
 
   console.log(selectedLabels);
@@ -223,7 +231,7 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
                 />
                 <div>
                   {filteredLabels.slice(0, 5).map((label, index) => (
-                    <div className="flex gap-2 items-center" key={index}>
+                    <div className="flex gap-4 items-center" key={index}>
                       <input
                         type="checkbox"
                         value={label.title}
@@ -235,11 +243,20 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
                 </div>
                 {labelName.length > 0 && isCreatable && (
                   <div
-                    className="flex gap-2 items-center cursor-pointer w-fit"
+                    className="flex gap-3 items-center cursor-pointer w-fit"
                     onClick={() => createNewLabel(labelName, id)}
                   >
                     <AiOutlinePlus />
                     <h5>Create "{labelName}"</h5>
+                  </div>
+                )}
+                {selectedLabels.length > 0 && (
+                  <div
+                    onClick={() => addLabelsToNote(id, selectedLabels)}
+                    className="flex gap-3 items-center cursor-pointer"
+                  >
+                    <MdLabel />
+                    <p>Add Labels</p>
                   </div>
                 )}
               </div>
