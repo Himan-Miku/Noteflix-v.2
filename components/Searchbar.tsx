@@ -31,9 +31,14 @@ const Searchbar = () => {
     }
 
     try {
-      //   let userPrefix = session?.user?.email?.split("@")[0] || "";
-      //   const queryToSend = `${userPrefix}/${queryy}`;
-      const result = await index.search(queryy);
+      let userId = session?.user?.email || "";
+
+      const result = await index.search(queryy, {
+        filters: `userId:${userId}`,
+      });
+
+      console.log("result from algolia: ", result);
+
       setSearchResults(result.hits as SearchResults);
     } catch (error) {
       console.error("Error Searching with Algolia : ", error);
