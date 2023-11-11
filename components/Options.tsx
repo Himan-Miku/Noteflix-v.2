@@ -34,7 +34,7 @@ interface fNote {
   id: string;
 }
 
-interface labelDataWithoutID {
+export interface labelDataWithoutID {
   labelName: string;
   noteRefs: Array<string>;
 }
