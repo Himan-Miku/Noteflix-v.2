@@ -31,7 +31,7 @@ export default async function RootLayout({
   console.log("Session from layout component: ", session);
 
   return (
-    <html className="overflow-hidden" lang="en">
+    <html className="overflow-x-hidden overflow-y-auto" lang="en">
       <body className={`${poppins.variable} font-poppins bg-[#202124]`}>
         <SessionProvider session={session}>
           <ModalContextProvider>
