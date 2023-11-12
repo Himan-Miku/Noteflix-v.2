@@ -68,7 +68,15 @@ export default function LabelsPage() {
   };
 
   return (
-    <main className="cal-h overflow-y-auto overflow-x-hidden scrollbar px-20 pt-10 pb-8">
+    <main
+      className="cal-h overflow-y-auto overflow-x-hidden scrollbar px-20 pt-10 pb-8"
+      style={{
+        backgroundImage: `url("/note-page-2.png")`,
+        backgroundSize: "cover",
+        backgroundPositionX: "left",
+        backgroundPositionY: "top",
+      }}
+    >
       <div className="flex items-center justify-center">
         <div
           style={{
