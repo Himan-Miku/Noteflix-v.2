@@ -21,7 +21,11 @@ import { ChangeEvent, useState } from "react";
 import { MdLabel, MdLabelOutline } from "react-icons/md";
 import { AiOutlinePlus } from "react-icons/ai";
 import { useSession } from "next-auth/react";
-import { deleteNoteToast } from "@/utils/toasts";
+import {
+  archiveNoteToast,
+  deleteNoteToast,
+  unarchiveNoteToast,
+} from "@/utils/toasts";
 
 interface notesProps {
   id: string;
@@ -84,12 +88,14 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
     await updateDoc(doc(db, "notes", id), {
       archived: true,
     });
+    archiveNoteToast();
   };
 
   const handleUnarchive = async ({ id }: fNote) => {
     await updateDoc(doc(db, "notes", id), {
       archived: false,
     });
+    unarchiveNoteToast();
   };
 
   const searchLabels = (labelName: string) => {

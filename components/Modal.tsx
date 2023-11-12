@@ -17,6 +17,12 @@ import {
   IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 import { usePathname } from "next/navigation";
+import {
+  archiveNoteToast,
+  discardChangesToast,
+  saveChangesToast,
+  unarchiveNoteToast,
+} from "@/utils/toasts";
 
 export interface NoteInput {
   title?: string;
@@ -50,6 +56,8 @@ const Modal = () => {
       title: "",
       content: "",
     });
+
+    discardChangesToast();
   };
 
   const handleSubmitChanges = async (e: FormEvent<HTMLFormElement>) => {
@@ -60,6 +68,8 @@ const Modal = () => {
       content: input.content,
     });
 
+    saveChangesToast();
+
     closeModal();
   };
 
@@ -67,12 +77,14 @@ const Modal = () => {
     await updateDoc(doc(db, "notes", id!), {
       archived: true,
     });
+    archiveNoteToast();
   };
 
   const handleUnarchive = async () => {
     await updateDoc(doc(db, "notes", id!), {
       archived: false,
     });
+    unarchiveNoteToast();
   };
 
   return (
