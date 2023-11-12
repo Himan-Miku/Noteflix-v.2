@@ -38,7 +38,7 @@ const Note = ({ id, data }: noteProps) => {
         backgroundPositionY: "bottom",
         backgroundSize: "cover",
       }}
-      className={`inline-block p-3 mb-4 w-full h-max border border-1 border-[#575B5F] rounded-lg`}
+      className={`inline-block p-3 md:mb-4 mb-3 w-full h-max border border-1 border-[#575B5F] rounded-lg`}
     >
       <button type="button" onClick={handleOnClick} className="note-btn">
         <div className="px-2">

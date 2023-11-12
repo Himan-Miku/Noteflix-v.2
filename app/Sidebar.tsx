@@ -8,6 +8,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
+import clsx from "clsx";
+import { ISidebarContext, sidebarContext } from "@/context/SidebarContext";
+import { MobileStore } from "@/context/MobileContext";
 
 export type LabelsData = {
   id: string;
@@ -44,6 +47,8 @@ const sideBar: {
 const Sidebar = () => {
   const pathname = usePathname();
   const { labels, setLabels } = LabelsStore();
+  const { isOnMobile } = MobileStore();
+  const { showSidebar } = sidebarContext() as ISidebarContext;
   const { data: session } = useSession();
   let user = session?.user?.email || "";
   console.log(user);
@@ -82,11 +87,29 @@ const Sidebar = () => {
       <div>
         <Toaster position="bottom-left" reverseOrder={true} />
       </div>
-      <div className="cal-h w-72 py-2 overflow-y-auto bg-[#202124] relative scrollbar">
+      <div
+        className={clsx(
+          "cal-h md:w-72 w-64 py-2 overflow-y-auto bg-[#202124] scrollbar",
+          {
+            "hidden md:block -translate-x-full": !showSidebar && isOnMobile,
+            "translate-x-0 absolute z-20": showSidebar,
+            relative: !isOnMobile,
+            "border-r border-[#575B5F]": isOnMobile,
+          }
+        )}
+      >
+        {isOnMobile && (
+          <Link href={"/"}>
+            <div className="flex gap-5 items-center justify-start pt-3 pb-4 px-6">
+              <img className="w-10" src="/aka.png" alt="logo" />
+              <h1 className="font-bold text-xl text-[#E9E9E9]">Noteflix</h1>
+            </div>
+          </Link>
+        )}
         {sideBar.map((item, index) => (
           <Link key={index} href={item.path}>
             <div
-              className={`group w-64 flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none px-4 py-3 text-[1.05rem] cursor-pointer ${
+              className={`group md:w-64 w-[14.5rem] flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none md:px-4 px-8 py-3 text-[0.925rem] md:text-[1.05rem] cursor-pointer ${
                 pathname === item.path
                   ? "bg-none bg-[#9f4040a7]"
                   : "bg-none hover:text-gray-300 hover:bg-[#28292C]"
@@ -110,7 +133,7 @@ const Sidebar = () => {
         {labels.map((item, index) => (
           <Link key={index} href={item.path}>
             <div
-              className={`group w-64 flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none px-4 py-3 text-[1.05rem] cursor-pointer ${
+              className={`group md:w-64 w-[14.5rem] flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none md:px-4 px-8 py-3 md:text-[1.05rem] text-[0.925rem] cursor-pointer ${
                 pathname === item.path
                   ? "bg-none bg-[#9f4040a7]"
                   : "bg-none hover:text-gray-300 hover:bg-[#28292C]"
@@ -134,7 +157,7 @@ const Sidebar = () => {
         {labels && labels.length > 0 && (
           <Link href={`/labels`}>
             <div
-              className={`group w-64 flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none px-4 py-3 text-[1.05rem] cursor-pointer ${
+              className={`group md:w-64 w-[14.5rem] flex gap-8 font-medium rounded-tr-full rounded-br-full text-gray-300 border-none md:px-4 px-8 py-3 md:text-[1.05rem] text-[0.925rem] cursor-pointer ${
                 pathname === "/labels"
                   ? "bg-none bg-[#9f4040a7]"
                   : "bg-none hover:text-gray-300 hover:bg-[#28292C]"

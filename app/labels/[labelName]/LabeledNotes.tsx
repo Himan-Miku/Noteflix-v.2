@@ -8,6 +8,7 @@ import { NoteContextProvider } from "@/context/NoteContext";
 import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
 import { noteData } from "@/app/Notes";
+import clsx from "clsx";
 
 export default function LabeledNotes({ labelName }: { labelName: string }) {
   const [parent, enableAnimations] = useAutoAnimate();
@@ -24,13 +25,40 @@ export default function LabeledNotes({ labelName }: { labelName: string }) {
   return (
     <NoteContextProvider>
       <div className="flex flex-col gap-2">
-        <div className="text-[#DA7370] font-semibold text-2xl px-4">
-          <h3>{labelName} Label Notes : </h3>
+        <div
+          className={clsx(
+            "text-[#DA7370] font-semibold text-xl md:text-2xl md:px-4 px-2",
+            {
+              hidden: !notes || notes.docs.length === 0,
+            }
+          )}
+        >
+          <h3>Archived Notes : </h3>
         </div>
-        <div ref={parent} className="notes-columns gap-4 p-4 my-4">
-          {notes?.docs.map((note) => (
-            <Note key={note.id} id={note.id} data={note.data() as noteData} />
-          ))}
+        <div
+          ref={parent}
+          className={`${
+            notes && notes.docs.length > 0
+              ? "notes-columns md:gap-4 gap-3 md:p-4 px-2 my-4"
+              : "flex justify-center items-center md:p-4 p-2 md:my-8 my-4"
+          }`}
+        >
+          {notes && notes.docs.length > 0 ? (
+            notes.docs.map((note) => (
+              <Note key={note.id} id={note.id} data={note.data() as noteData} />
+            ))
+          ) : (
+            <div className="flex items-center justify-center md:gap-12 gap-6 flex-col">
+              <h3 className="text-[#DA7370] md:text-2xl text-xl font-semibold">
+                No Notes Tagged 🏷️
+              </h3>
+              <img
+                src="/spongedance.gif"
+                alt="spongebob gif"
+                className="md:w-64 w-52 rounded-md"
+              />
+            </div>
+          )}
           <Modal />
         </div>
       </div>

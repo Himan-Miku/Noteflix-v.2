@@ -280,7 +280,7 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
               <MdLabelOutline fontSize={"1.2rem"} />
             </button>
             {showLabels && (
-              <div className="absolute bg-[#733536] border-[#202124] text-white rounded py-2 px-3 z-20 flex flex-col justify-center gap-3">
+              <div className="absolute bg-[#733536] border-[#202124] text-white rounded py-2 px-3 z-10 flex flex-col justify-center gap-3">
                 <div className="flex flex-col gap-2">
                   <label className="font-semibold" htmlFor="labelName">
                     Label Note :

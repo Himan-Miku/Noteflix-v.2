@@ -47,16 +47,20 @@ export default function Notes() {
         className={`${
           (queryy === "" && (!notes || notes.docs.length === 0)) ||
           (queryy !== "" && searchResults.length === 0)
-            ? "flex justify-center items-center p-4 my-8"
-            : "notes-columns gap-4 p-4 my-8"
+            ? "flex justify-center items-center md:p-4 p-2 md:my-8 my-4"
+            : "notes-columns md:gap-4 gap-3 md:p-4 p-2 md:my-8 my-4"
         }`}
       >
         {queryy === "" && (!notes || notes.docs.length === 0) ? (
-          <div className="flex items-center justify-center gap-12 flex-col">
-            <h3 className="text-[#DA7370] text-2xl font-semibold">
+          <div className="flex items-center justify-center md:gap-12 gap-6 flex-col">
+            <h3 className="text-[#DA7370] md:text-2xl text-xl font-semibold">
               No Notes Created 📝
             </h3>
-            <img src="/empty.gif" alt="empty gif" className="w-64" />
+            <img
+              src="/empty.gif"
+              alt="empty gif"
+              className="md:w-64 w-52 rounded-md"
+            />
           </div>
         ) : (
           <>
@@ -77,11 +81,15 @@ export default function Notes() {
                 />
               ))
             ) : (
-              <div className="flex items-center justify-center gap-12 flex-col">
-                <h3 className="text-[#DA7370] text-2xl font-semibold">
+              <div className="flex items-center justify-center md:gap-12 gap-6 flex-col">
+                <h3 className="text-[#DA7370] md:text-2xl text-xl font-semibold">
                   No Results Found 🔍
                 </h3>
-                <img src="/search.gif" alt="search gif" className="w-64" />
+                <img
+                  src="/search.gif"
+                  alt="search gif"
+                  className="md:w-64 w-52 rounded-md"
+                />
               </div>
             )}
           </>

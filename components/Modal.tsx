@@ -90,7 +90,7 @@ const Modal = () => {
   return (
     <div>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-30" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -126,7 +126,7 @@ const Modal = () => {
                   <form onSubmit={handleSubmitChanges}>
                     <div>
                       <input
-                        className="bg-transparent px-4 py-2 focus:outline-none w-full text-white font-semibold placeholder:font-semibold text-2xl caret-white"
+                        className="bg-transparent px-3 md:px-4 md:py-2 py-1 focus:outline-none w-full text-white font-semibold placeholder:font-semibold md:text-2xl text-xl caret-white"
                         placeholder="Title"
                         value={input.title}
                         onChange={(e) =>
@@ -137,7 +137,7 @@ const Modal = () => {
                     </div>
                     <div>
                       <textarea
-                        className={`bg-transparent px-4 py-2 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-auto h-auto max-h-80 text-white scrollbar-hide`}
+                        className={`bg-transparent md:px-4 px-3 md:py-2 py-1 mt-1 focus:outline-none w-full placeholder:font-semibold placeholder:text-sm caret-white resize-none overflow-auto h-auto max-h-80 text-white scrollbar-hide text-sm`}
                         placeholder="Take a note..."
                         value={input.content}
                         onChange={(e) => handleTextAreaInput(e)}

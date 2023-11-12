@@ -91,7 +91,7 @@ const Form = () => {
   return (
     <div className="flex justify-center items-center">
       <form
-        className="w-1/2 rounded-lg outline outline-1 outline-gray-400 p-3 shadow-black shadow-lg"
+        className="md:w-1/2 w-[95%] rounded-lg outline outline-1 outline-gray-400 p-3 shadow-black shadow-lg"
         onSubmit={handleSubmit}
         autoComplete="off"
         ref={formRef}
