@@ -92,7 +92,7 @@ const Sidebar = () => {
           "cal-h md:w-72 w-64 py-2 overflow-y-auto bg-[#202124] scrollbar",
           {
             "hidden md:block -translate-x-full": !showSidebar && isOnMobile,
-            "translate-x-0 absolute z-20": showSidebar,
+            "translate-x-0 absolute z-30": showSidebar,
             relative: !isOnMobile,
             "border-r border-[#575B5F]": isOnMobile,
           }

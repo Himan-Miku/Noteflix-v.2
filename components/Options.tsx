@@ -26,6 +26,7 @@ import {
   deleteNoteToast,
   unarchiveNoteToast,
 } from "@/utils/toasts";
+import { MobileStore } from "@/context/MobileContext";
 
 interface notesProps {
   id: string;
@@ -55,6 +56,7 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
   const [showLabels, setShowLabels] = useState(false);
   const [labelName, setLabelName] = useState("");
   const { labels } = LabelsStore();
+  const { isOnMobile } = MobileStore();
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
   const { data: session } = useSession();
 
@@ -233,44 +235,126 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
               width={20}
             />
           </button>
-          {showBackgrounds && (
-            <div className="absolute -right-40 top-10 rounded-lg box-shadow-color bg-[#202124] p-4">
-              <div className="flex justify-center items-center gap-1 mb-2">
-                {bgImages.slice(0, 10).map((image) => (
-                  <div
-                    key={image.imageId}
-                    className="rounded-full w-9 h-9 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
-                    onClick={() => {
-                      bgImageFn(image.svgSrc, image.opImage);
-                      setShowBackgrounds(false);
-                    }}
-                  >
-                    <img
-                      src={image.coverPic}
-                      className="w-[100%] rounded-full"
-                    />
+          {isOnMobile ? (
+            <>
+              {showBackgrounds && (
+                <div className="absolute -translate-x-[5.7rem] top-10 rounded-lg box-shadow-color bg-[#202124] p-2 z-20">
+                  <div className="flex justify-center items-center gap-1 mb-2">
+                    {bgImages.slice(0, 5).map((image) => (
+                      <div
+                        key={image.imageId}
+                        className="rounded-full w-8 h-8 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
+                        onClick={() => {
+                          bgImageFn(image.svgSrc, image.opImage);
+                          setShowBackgrounds(false);
+                        }}
+                      >
+                        <img
+                          src={image.coverPic}
+                          className="w-[100%] rounded-full"
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <hr className="border border-[#575B5F]" />
-              <div className="flex justify-center items-center gap-1 mt-2">
-                {bgImages.slice(10).map((image) => (
-                  <div
-                    key={image.imageId}
-                    className="rounded-full w-9 h-9 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
-                    onClick={() => {
-                      bgImageFn(image.svgSrc, image.opImage);
-                      setShowBackgrounds(false);
-                    }}
-                  >
-                    <img
-                      src={image.coverPic}
-                      className="w-[100%] rounded-full"
-                    />
+                  <hr className="border border-[#575B5F]" />
+                  <div className="flex justify-center items-center gap-1 my-2">
+                    {bgImages.slice(5, 10).map((image) => (
+                      <div
+                        key={image.imageId}
+                        className="rounded-full w-8 h-8 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
+                        onClick={() => {
+                          bgImageFn(image.svgSrc, image.opImage);
+                          setShowBackgrounds(false);
+                        }}
+                      >
+                        <img
+                          src={image.coverPic}
+                          className="w-[100%] rounded-full"
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                  <hr className="border border-[#575B5F]" />
+                  <div className="flex justify-center items-center gap-1 my-2">
+                    {bgImages.slice(10, 15).map((image) => (
+                      <div
+                        key={image.imageId}
+                        className="rounded-full w-8 h-8 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
+                        onClick={() => {
+                          bgImageFn(image.svgSrc, image.opImage);
+                          setShowBackgrounds(false);
+                        }}
+                      >
+                        <img
+                          src={image.coverPic}
+                          className="w-[100%] rounded-full"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <hr className="border border-[#575B5F]" />
+                  <div className="flex justify-center items-center gap-1 mt-2">
+                    {bgImages.slice(15).map((image) => (
+                      <div
+                        key={image.imageId}
+                        className="rounded-full w-8 h-8 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
+                        onClick={() => {
+                          bgImageFn(image.svgSrc, image.opImage);
+                          setShowBackgrounds(false);
+                        }}
+                      >
+                        <img
+                          src={image.coverPic}
+                          className="w-[100%] rounded-full"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {showBackgrounds && (
+                <div className="absolute -right-40 top-10 rounded-lg box-shadow-color bg-[#202124] p-4 z-20">
+                  <div className="flex justify-center items-center gap-1 mb-2">
+                    {bgImages.slice(0, 10).map((image) => (
+                      <div
+                        key={image.imageId}
+                        className="rounded-full w-9 h-9 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
+                        onClick={() => {
+                          bgImageFn(image.svgSrc, image.opImage);
+                          setShowBackgrounds(false);
+                        }}
+                      >
+                        <img
+                          src={image.coverPic}
+                          className="w-[100%] rounded-full"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <hr className="border border-[#575B5F]" />
+                  <div className="flex justify-center items-center gap-1 mt-2">
+                    {bgImages.slice(10).map((image) => (
+                      <div
+                        key={image.imageId}
+                        className="rounded-full w-9 h-9 cursor-pointer hover:border-2 hover:border-white flex justify-center items-center"
+                        onClick={() => {
+                          bgImageFn(image.svgSrc, image.opImage);
+                          setShowBackgrounds(false);
+                        }}
+                      >
+                        <img
+                          src={image.coverPic}
+                          className="w-[100%] rounded-full"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
           )}
           <div className="relative inline-block">
             <button
@@ -280,7 +364,7 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
               <MdLabelOutline fontSize={"1.2rem"} />
             </button>
             {showLabels && (
-              <div className="absolute bg-[#733536] border-[#202124] text-white rounded py-2 px-3 z-10 flex flex-col justify-center gap-3">
+              <div className="absolute top-10 -translate-x-[69%] bg-[#733536] border-[#202124] text-white rounded py-2 px-3 z-10 flex flex-col justify-center gap-3 w-44">
                 <div className="flex flex-col gap-2">
                   <label className="font-semibold" htmlFor="labelName">
                     Label Note :

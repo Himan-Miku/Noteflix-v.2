@@ -43,7 +43,11 @@ a {
 }
 
 .notes-columns {
-  columns: 210px auto;
+  columns: 240px auto;
+}
+
+.notes-col {
+  columns: 135px auto;
 }
 
 .box-shadow-color {

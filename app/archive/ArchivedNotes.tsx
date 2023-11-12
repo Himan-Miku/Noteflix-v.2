@@ -9,6 +9,7 @@ import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
 import { noteData } from "../Notes";
 import clsx from "clsx";
+import { MobileStore } from "@/context/MobileContext";
 
 export interface iNote {
   title: string;
@@ -26,6 +27,7 @@ export default function ArchivedNotes() {
     where("archived", "==", true),
     where("userId", "==", userId)
   );
+  const { isOnMobile } = MobileStore();
 
   const [notes] = useCollection(q);
 
@@ -46,7 +48,9 @@ export default function ArchivedNotes() {
           ref={parent}
           className={`${
             notes && notes.docs.length > 0
-              ? "notes-columns md:gap-4 gap-3 md:p-4 px-2 my-4"
+              ? isOnMobile
+                ? "notes-col md:gap-4 gap-3 md:p-4 px-2 my-4"
+                : "notes-columns md:gap-4 gap-3 md:p-4 px-2 my-4"
               : "flex justify-center items-center md:p-4 p-2 md:my-8 my-4"
           }`}
         >

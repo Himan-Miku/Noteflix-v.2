@@ -8,6 +8,7 @@ import { NoteContextProvider } from "@/context/NoteContext";
 import Modal from "@/components/Modal";
 import { useSession } from "next-auth/react";
 import { AlgoliaStore } from "@/context/AlgoliaContext";
+import { MobileStore } from "@/context/MobileContext";
 
 export interface iNote {
   title: string;
@@ -30,6 +31,7 @@ export default function Notes() {
   const { data: session } = useSession();
   const [parent, enableAnimations] = useAutoAnimate();
   const { searchResults, queryy } = AlgoliaStore();
+  const { isOnMobile } = MobileStore();
 
   const userEmail = session?.user?.email || "";
   const q = query(
@@ -48,6 +50,8 @@ export default function Notes() {
           (queryy === "" && (!notes || notes.docs.length === 0)) ||
           (queryy !== "" && searchResults.length === 0)
             ? "flex justify-center items-center md:p-4 p-2 md:my-8 my-4"
+            : isOnMobile
+            ? "notes-col md:gap-4 gap-3 md:p-4 p-2 md:my-8 my-4"
             : "notes-columns md:gap-4 gap-3 md:p-4 p-2 md:my-8 my-4"
         }`}
       >
