@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 export type LabelsData = {
   id: string;
@@ -78,6 +79,9 @@ const Sidebar = () => {
 
   return (
     <>
+      <div>
+        <Toaster position="bottom-left" reverseOrder={true} />
+      </div>
       <div className="cal-h w-72 py-2 overflow-y-auto bg-[#202124] relative scrollbar">
         {sideBar.map((item, index) => (
           <Link key={index} href={item.path}>
