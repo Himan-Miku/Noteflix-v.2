@@ -42,7 +42,9 @@ const Note = ({ id, data }: noteProps) => {
     >
       <button type="button" onClick={handleOnClick} className="note-btn">
         <div className="px-2">
-          <h3 className="text-[#f5f5f5] font-semibold text-lg">{data.title}</h3>
+          <h3 className="text-[#f5f5f5] font-semibold text-lg break-all">
+            {data.title}
+          </h3>
         </div>
         <div className="p-2">
           <p className="text-[#f5f5f5] font-normal leading-[1.35rem] text-sm max-h-64 break-all overflow-y-auto scrollbar-hide">
