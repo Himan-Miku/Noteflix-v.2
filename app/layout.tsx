@@ -7,7 +7,6 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { SessionProvider } from "@/components/SessionProvider";
 import { ModalContextProvider } from "@/context/ModalContext";
-import { AlertContextProvider } from "@/context/AlertContext";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -39,14 +38,12 @@ export default async function RootLayout({
               <>
                 {/* @ts-ignore */}
                 <Navbar />
-                <AlertContextProvider>
-                  <div className="flex">
-                    <div>
-                      <Sidebar />
-                    </div>
-                    <div className="flex-1">{children}</div>
+                <div className="flex">
+                  <div>
+                    <Sidebar />
                   </div>
-                </AlertContextProvider>
+                  <div className="flex-1">{children}</div>
+                </div>
               </>
             ) : (
               <>

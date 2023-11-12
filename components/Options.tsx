@@ -2,7 +2,6 @@
 
 import { LabelsData } from "@/app/Sidebar";
 import { db } from "@/config/firebase";
-import { alertContext, tAlertC } from "@/context/AlertContext";
 import { LabelsStore } from "@/context/LabelsContext";
 import { bgImages } from "@/utils/backgrounds";
 import {
@@ -45,7 +44,6 @@ interface labelData extends labelDataWithoutID {
 }
 
 const Options = ({ id, bgImageFn, status }: notesProps) => {
-  const { setAlert } = alertContext() as tAlertC;
   const [isCreatable, setIsCreatable] = useState(true);
   const [showBackgrounds, setShowBackgrounds] = useState(false);
   const [showLabels, setShowLabels] = useState(false);
@@ -186,7 +184,6 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
         <button
           onClick={() => {
             handleArchive({ id });
-            setAlert(true);
           }}
           className="bg-transparent hover:bg-[#2f3033] text-white font-bold p-2 rounded-full"
         >
