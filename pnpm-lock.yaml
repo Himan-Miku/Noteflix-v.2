@@ -9,6 +9,7 @@ specifiers:
   '@types/react-dom': 18.0.11
   algoliasearch: ^4.20.0
   autoprefixer: ^10.4.14
+  csstype: ^3.0.10
   encoding: ^0.1.13
   firebase: ^9.21.0
   firebase-admin: ^11.7.0
@@ -19,6 +20,7 @@ specifiers:
   react-datepicker: ^4.11.0
   react-dom: 18.2.0
   react-firebase-hooks: ^5.1.1
+  react-hot-toast: ^2.4.1
   react-icons: ^4.8.0
   tailwind-scrollbar-hide: ^1.1.7
   tailwindcss: ^3.3.2
@@ -33,6 +35,7 @@ dependencies:
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
   algoliasearch: 4.20.0
+  csstype: 3.1.2
   firebase: 9.21.0_encoding@0.1.13
   firebase-admin: 11.7.0_encoding@0.1.13
   next: 13.2.4_biqbaboplfbrettd7655fr4n2y
@@ -41,6 +44,7 @@ dependencies:
   react-datepicker: 4.11.0_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-firebase-hooks: 5.1.1_b2unba3xze4blmooc7onmxpy24
+  react-hot-toast: 2.4.1_s7mghcr6idhb4d5ook54gl4n44
   react-icons: 4.8.0_react@18.2.0
   tailwind-scrollbar-hide: 1.1.7
   typescript: 4.9.5
@@ -1794,6 +1798,14 @@ packages:
     dev: false
     optional: true
 
+  /goober/2.1.13_csstype@3.1.2:
+    resolution: {integrity: sha512-jFj3BQeleOoy7t93E9rZ2de+ScC4lQICLwiAQmKMg9F6roKGaLSHoCDYKkWlSafg138jejvq/mTdvmnwDQgqoQ==}
+    peerDependencies:
+      csstype: ^3.0.10
+    dependencies:
+      csstype: 3.1.2
+    dev: false
+
   /google-auth-library/8.8.0_encoding@0.1.13:
     resolution: {integrity: sha512-0iJn7IDqObDG5Tu9Tn2WemmJ31ksEa96IyK0J0OZCpTh6CrC6FrattwKX87h3qKVuprCJpdOGKc1Xi8V0kMh8Q==}
     engines: {node: '>=12'}
@@ -2705,6 +2717,20 @@ packages:
     dependencies:
       firebase: 9.21.0_encoding@0.1.13
       react: 18.2.0
+    dev: false
+
+  /react-hot-toast/2.4.1_s7mghcr6idhb4d5ook54gl4n44:
+    resolution: {integrity: sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      goober: 2.1.13_csstype@3.1.2
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    transitivePeerDependencies:
+      - csstype
     dev: false
 
   /react-icons/4.8.0_react@18.2.0:
