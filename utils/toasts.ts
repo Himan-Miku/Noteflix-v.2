@@ -22,7 +22,7 @@ export const archiveNoteToast = () =>
   });
 export const unarchiveNoteToast = () =>
   toast("Note Unarchived", {
-    icon: "👇",
+    icon: "👆",
     duration: 4000,
     style: {
       borderRadius: "10px",
@@ -31,8 +31,7 @@ export const unarchiveNoteToast = () =>
     },
   });
 export const discardChangesToast = () =>
-  toast("Changes Discarded", {
-    icon: "🏷️",
+  toast.error("Changes Discarded", {
     duration: 4000,
     style: {
       borderRadius: "10px",
@@ -41,8 +40,7 @@ export const discardChangesToast = () =>
     },
   });
 export const saveChangesToast = () =>
-  toast("Changes Saved", {
-    icon: "🏷️",
+  toast.success("Changes Saved", {
     duration: 4000,
     style: {
       borderRadius: "10px",
