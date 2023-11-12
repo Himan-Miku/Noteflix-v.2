@@ -108,7 +108,7 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const labelName = e.target.value;
+    const labelName = e.target.value.replace(/ /g, "");
 
     let alreadyExists = filteredLabels.some(
       (label) => labelName === label.title
@@ -376,6 +376,11 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
                     className="bg-[#202124] outline-none px-2 py-1 caret-gray-400 rounded-md"
                     value={labelName}
                     onChange={handleChange}
+                    onKeyDown={(e) => {
+                      if (e.key === " ") {
+                        return false;
+                      }
+                    }}
                   />
                   <div>
                     {filteredLabels.slice(0, 5).map((label, index) => (
