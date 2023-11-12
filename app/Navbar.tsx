@@ -17,7 +17,7 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="flex border-b border-gray-500 justify-between items-center md:px-4 px-6 py-2">
+    <div className="flex border-b border-gray-500 justify-between items-center md:px-4 px-6 md:py-2 py-4">
       {!isOnMobile && (
         <div className="flex md:gap-4 gap-3 items-center justify-center">
           <img className="w-10" src="/aka.png" alt="logo" />
