@@ -16,6 +16,7 @@ import {
   IoCloseCircleOutline,
   IoCheckmarkCircleOutline,
 } from "react-icons/io5";
+import { usePathname } from "next/navigation";
 
 export interface NoteInput {
   title?: string;
@@ -30,6 +31,7 @@ const Modal = () => {
     title: notedata?.title || "",
     content: notedata?.content || "",
   });
+  const pathname = usePathname();
 
   useEffect(() => {
     setInput({
@@ -59,6 +61,18 @@ const Modal = () => {
     });
 
     closeModal();
+  };
+
+  const handleArchive = async () => {
+    await updateDoc(doc(db, "notes", id!), {
+      archived: true,
+    });
+  };
+
+  const handleUnarchive = async () => {
+    await updateDoc(doc(db, "notes", id!), {
+      archived: false,
+    });
   };
 
   return (
@@ -136,14 +150,31 @@ const Modal = () => {
                             width={25}
                           />
                         </button>
-                        <button className="bg-transparent transition-colors duration-300 hover:bg-[#2f3033] text-3xl text-white font-bold p-[0.37rem] rounded-full">
-                          <img
-                            src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj4KICA8cGF0aCBkPSJNMjAuNTQgNS4yM2wtMS4zOS0xLjY4QzE4Ljg4IDMuMjEgMTguNDcgMyAxOCAzSDZjLS40NyAwLS44OC4yMS0xLjE2LjU1TDMuNDYgNS4yM0MzLjE3IDUuNTcgMyA2LjAyIDMgNi41VjE5YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWNi41YzAtLjQ4LS4xNy0uOTMtLjQ2LTEuMjd6TTYuMjQgNWgxMS41MmwuODMgMUg1LjQybC44Mi0xek01IDE5VjhoMTR2MTFINXptMTEtNS41bC00IDQtNC00IDEuNDEtMS40MUwxMSAxMy42N1YxMGgydjMuNjdsMS41OS0xLjU5TDE2IDEzLjV6Ii8+Cjwvc3ZnPgo="
-                            alt="archive"
-                            height={25}
-                            width={25}
-                          />
-                        </button>
+                        {pathname === "/archive" ? (
+                          <button
+                            onClick={handleUnarchive}
+                            className="bg-transparent transition-colors duration-300 hover:bg-[#2f3033] text-3xl text-white font-bold p-[0.37rem] rounded-full"
+                          >
+                            <img
+                              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj4KICA8cGF0aCBkPSJNMjAuNTQgNS4yM2wtMS4zOS0xLjY4QzE4Ljg4IDMuMjEgMTguNDcgMyAxOCAzSDZjLS40NyAwLS44OC4yMS0xLjE2LjU1TDMuNDYgNS4yM0MzLjE3IDUuNTcgMyA2LjAyIDMgNi41VjE5YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWNi41YzAtLjQ4LS4xNy0uOTMtLjQ2LTEuMjd6TTYuMjQgNWgxMS41MmwuODMgMUg1LjQybC44Mi0xek01IDE5VjhoMTR2MTFINXptMy01LjVsNC00IDQgNC0xLjQxIDEuNDFMMTMgMTMuMzNWMTdoLTJ2LTMuNjdsLTEuNTkgMS41OUw4IDEzLjV6Ii8+Cjwvc3ZnPgo="
+                              alt="unarchive"
+                              height={25}
+                              width={25}
+                            />
+                          </button>
+                        ) : (
+                          <button
+                            onClick={handleArchive}
+                            className="bg-transparent transition-colors duration-300 hover:bg-[#2f3033] text-3xl text-white font-bold p-[0.37rem] rounded-full"
+                          >
+                            <img
+                              src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj4KICA8cGF0aCBkPSJNMjAuNTQgNS4yM2wtMS4zOS0xLjY4QzE4Ljg4IDMuMjEgMTguNDcgMyAxOCAzSDZjLS40NyAwLS44OC4yMS0xLjE2LjU1TDMuNDYgNS4yM0MzLjE3IDUuNTcgMyA2LjAyIDMgNi41VjE5YzAgMS4xLjkgMiAyIDJoMTRjMS4xIDAgMi0uOSAyLTJWNi41YzAtLjQ4LS4xNy0uOTMtLjQ2LTEuMjd6TTYuMjQgNWgxMS41MmwuODMgMUg1LjQybC44Mi0xek01IDE5VjhoMTR2MTFINXptMTEtNS41bC00IDQtNC00IDEuNDEtMS40MUwxMSAxMy42N1YxMGgydjMuNjdsMS41OS0xLjU5TDE2IDEzLjV6Ii8+Cjwvc3ZnPgo="
+                              alt="archive"
+                              height={25}
+                              width={25}
+                            />
+                          </button>
+                        )}
                       </div>
                       <div>
                         <button
