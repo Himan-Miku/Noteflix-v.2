@@ -90,8 +90,8 @@ export default function LabelsPage() {
           <div className="md:text-2xl text-xl font-semibold text-[#9F4040] pt-2">
             <h3>Edit Labels :</h3>
           </div>
-          <div className="w-[20rem] flex flex-col md:gap-3 gap-2">
-            <div className="flex md:gap-3 gap-4 min-w-fit w-full items-center px-2 py-1 justify-center">
+          <div className="md:w-80 w-full flex flex-col md:gap-3 gap-2">
+            <div className="flex md:gap-3 gap-2 w-full items-center px-2 py-1 justify-center">
               <div
                 onClick={createNewLabel}
                 className="rounded-full p-1 text-[#DA7370] hover:bg-[#2f3033]"
@@ -102,8 +102,8 @@ export default function LabelsPage() {
                 type="text"
                 id="labelName"
                 autoComplete="off"
-                placeholder="Create new label"
-                className="bg-[#2f3033] text-[#e6e6e6] outline-none px-2 py-1 caret-gray-400 rounded-md placeholder:text-white"
+                placeholder="New label"
+                className="bg-[#2f3033] text-[#e6e6e6] outline-none px-2 py-1 caret-gray-400 rounded-md placeholder:text-white max-w-[70%]"
                 value={labelName}
                 onChange={handleChange}
               />
@@ -114,7 +114,7 @@ export default function LabelsPage() {
                 <BsCheckLg />
               </div>
             </div>
-            <div className="w-full min-w-fit pl-3 pr-2">
+            <div className="w-full min-w-fit px-2">
               {labels &&
                 labels.map((label, index) => (
                   <div
