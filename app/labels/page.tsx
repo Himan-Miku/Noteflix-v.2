@@ -90,7 +90,7 @@ export default function LabelsPage() {
           <div className="md:text-2xl text-xl font-semibold text-[#9F4040] pt-2">
             <h3>Edit Labels :</h3>
           </div>
-          <div className="md:w-80 w-full flex flex-col md:gap-3 gap-2">
+          <div className="w-full flex flex-col md:gap-3 gap-2">
             <div className="flex md:gap-3 gap-2 w-full items-center px-2 py-1 justify-center">
               <div
                 onClick={createNewLabel}
