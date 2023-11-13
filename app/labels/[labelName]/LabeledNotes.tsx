@@ -35,7 +35,7 @@ export default function LabeledNotes({ labelName }: { labelName: string }) {
             }
           )}
         >
-          <h3>Archived Notes : </h3>
+          <h3>{labelName} Labeled Notes : </h3>
         </div>
         <div
           ref={parent}
