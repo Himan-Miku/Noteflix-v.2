@@ -19,6 +19,16 @@ const poppins = Poppins({
 export const metadata = {
   title: "Noteflix",
   description: "An Anime Theme Notes Application.",
+  generator: "Next.js",
+  authors: [
+    {
+      name: "Himanshu Jagdale",
+      url: "https://www.linkedin.com/in/himan-miku/",
+    },
+  ],
+  manifest: "/manifest.json",
+  viewport:
+    "minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover",
 };
 
 export default async function RootLayout({
