@@ -1,0 +1,21 @@
+# .dockerignore for a Next.js app
+
+# Node.js dependencies
+node_modules/
+
+# Editor and IDE-specific files
+.vscode/
+.idea/
+*.swp
+
+# Log files
+npm-debug.log*
+
+# Tests and testing files (if not needed in the image)
+__tests__/
+test/
+jest.config.js
+
+# Docker-related files (if not needed in the image)
+Dockerfile
+.dockerignore
