@@ -19,3 +19,8 @@ jest.config.js
 # Docker-related files (if not needed in the image)
 Dockerfile
 .dockerignore
+
+README.md
+.git
+.gitignore
+.next
