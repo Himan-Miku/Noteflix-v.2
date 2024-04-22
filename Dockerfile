@@ -17,8 +17,16 @@ FROM node:18.14.0-bullseye-slim
 
 WORKDIR /noteflix
 
-COPY --from=builder /noteflix .
+# COPY --from=builder /noteflix/package.json .
+# COPY --from=builder /noteflix/pnpm-lock.yaml .
+# COPY --from=builder /noteflix/next.config.js ./
+COPY --from=builder /noteflix/public ./public
+COPY --from=builder /noteflix/.next/standalone ./
+COPY --from=builder /noteflix/.next/static ./.next/static
 
 EXPOSE 3000
 
-CMD ["pnpm", "start"]
+ENV PORT 3000
+ENV HOSTNAME "localhost"
+
+CMD ["node", "server.js"]
