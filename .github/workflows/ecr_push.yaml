@@ -33,6 +33,10 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
+      - name: Print Docker Login Command
+        run: |
+          echo "Docker login command: ${{ steps.login-ecr.outputs.login-command }}"
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
