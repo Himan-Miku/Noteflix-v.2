@@ -7,11 +7,11 @@ WORKDIR /noteflix
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 
-RUN pnpm install
+RUN sudo pnpm install
 
 COPY . .
 
-RUN pnpm build
+RUN sudo pnpm build
 
 FROM node:18.14.0-bullseye-slim
 
