@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   store:
-    name: Store Image to ECR
+    name: Store
     runs-on: ubuntu-latest
     environment: production
 
