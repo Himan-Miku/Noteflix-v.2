@@ -11,6 +11,8 @@ RUN pnpm install
 
 COPY . .
 
+RUN ls
+
 RUN pnpm build
 
 FROM node:18.14.0-bullseye-slim
