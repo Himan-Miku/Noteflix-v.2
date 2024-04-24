@@ -13,8 +13,8 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: Deploy
+  store:
+    name: Store
     runs-on: ubuntu-latest
     environment: production
 
