@@ -108,18 +108,16 @@ const Options = ({ id, bgImageFn, status }: notesProps) => {
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value) {
-      const labelName = e.target.value.replace(/ /g, "");
+    const labelName = e.target.value.replace(/ /g, "");
 
-      let alreadyExists = filteredLabels.some(
-        (label) => labelName === label.title
-      );
+    let alreadyExists = filteredLabels.some(
+      (label) => labelName === label.title
+    );
 
-      alreadyExists ? setIsCreatable(false) : setIsCreatable(true);
+    alreadyExists ? setIsCreatable(false) : setIsCreatable(true);
 
-      setLabelName(labelName);
-      searchLabels(labelName);
-    }
+    setLabelName(labelName);
+    searchLabels(labelName);
   };
 
   const createNewLabel = async (labelName: string, id: string) => {
