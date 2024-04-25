@@ -25,7 +25,7 @@ WORKDIR /noteflix
 COPY --from=builder /noteflix/public ./public
 COPY --from=builder /noteflix/.next/standalone ./
 COPY --from=builder /noteflix/.next/static ./.next/static
-COPY --from=builder /noteflix/adminSDK.json ./
+# COPY --from=builder /noteflix/adminSDK.json ./
 COPY --from=builder /noteflix/.env ./
 
 EXPOSE 3000
