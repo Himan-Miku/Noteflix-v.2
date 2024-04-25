@@ -24,18 +24,18 @@ jobs:
 
       - name: Create .env file from secrets
         run: |
-          echo "${{ secrets.ADMIN_SDK_JSON }}" > ./adminSDK.json
           echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> ./.env
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> ./.env
           echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> ./.env
           echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> ./.env
           echo "PRO_GITHUB_ID=${{ secrets.PRO_GITHUB_ID }}" >> ./.env
           echo "PRO_GITHUB_SECRET=${{ secrets.PRO_GITHUB_SECRET }}" >> ./.env
-          echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> ./.env
-          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> ./.env
           echo "NEXT_PUBLIC_ALGOLIA_APP_ID=${{ secrets.NEXT_PUBLIC_ALGOLIA_APP_ID }}" >> ./.env
           echo "NEXT_PUBLIC_ALGOLIA_API_KEY=${{ secrets.NEXT_PUBLIC_ALGOLIA_API_KEY }}" >> ./.env
-          echo "GOOGLE_APPLICATION_CREDENTIALS=./adminSDK.json" >> ./.env
-          ls -al
+          echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> ./.env
+          echo "FIREBASE_PROJECT_ID=${{ secrets.FIREBASE_PROJECT_ID }}" >> ./.env
+          echo "FIREBASE_CLIENT_EMAIL=${{ secrets.FIREBASE_CLIENT_EMAIL }}" >> ./.env
+          echo "FIREBASE_PRIVATE_KEY=${{ secrets.FIREBASE_PRIVATE_KEY }}" >> ./.env
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
