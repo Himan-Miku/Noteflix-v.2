@@ -22,6 +22,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Create .env file from secrets
+        run: |
+          echo "${{ secrets.ADMIN_SDK_JSON }}" > ./adminSDK.json
+          echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> ./env
+          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" >> ./env
+          echo "GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}" >> ./env
+          echo "GITHUB_ID=${{ secrets.GITHUB_ID }}" >> ./env
+          echo "GITHUB_SECRET=${{ secrets.GITHUB_SECRET }}" >> ./env
+          echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> ./env
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> ./env
+          echo "NEXT_PUBLIC_ALGOLIA_APP_ID=${{ secrets.NEXT_PUBLIC_ALGOLIA_APP_ID }}" >> ./env
+          echo "NEXT_PUBLIC_ALGOLIA_API_KEY=${{ secrets.NEXT_PUBLIC_ALGOLIA_API_KEY }}" >> ./env
+          echo "GOOGLE_APPLICATION_CREDENTIALS=./adminSDK.json" >> ./env
+          ls -al
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
