@@ -46,3 +46,10 @@ adminSDK.json
 **/public/sw.js.map
 **/public/workbox-*.js.map
 **/public/worker-*.js.map
+
+#terraform
+.terraform
+terraform.tfstate
+.terraform.lock.hcl
+terraform.tfstate.backup
+errored.tfstate
