@@ -1,4 +1,4 @@
-name: Store Docker Image in Amazon ECR
+name: Store Docker Image in Amazon ECR & Terraform Provisioning
 
 on:
   push:
@@ -61,3 +61,36 @@ jobs:
           docker build --no-cache -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+  terraform-provisioning:
+    name: Terraform Provisioning
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.8.2
+
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check
+        continue-on-error: true
+
+      - name: Terraform Init
+        id: init
+        working-directory: /terraform/remote-provisioning
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
+        working-directory: /terraform/remote-provisioning
+        run: terraform plan -no-color
+
+      - name: Terraform Apply
+        id: apply
+        working-directory: /terraform/remote-provisioning
+        run: terraform apply -auto-approve
+
+      - run: echo ${{ steps.plan.outcome }}
