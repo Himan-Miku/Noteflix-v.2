@@ -64,6 +64,9 @@ jobs:
   terraform-provisioning:
     name: Terraform Provisioning
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: terraform/remote-provisioning
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -80,17 +83,14 @@ jobs:
 
       - name: Terraform Init
         id: init
-        working-directory: /terraform/remote-provisioning
         run: terraform init
 
       - name: Terraform Plan
         id: plan
-        working-directory: /terraform/remote-provisioning
         run: terraform plan -no-color
 
       - name: Terraform Apply
         id: apply
-        working-directory: /terraform/remote-provisioning
         run: terraform apply -auto-approve
 
       - run: echo ${{ steps.plan.outcome }}
