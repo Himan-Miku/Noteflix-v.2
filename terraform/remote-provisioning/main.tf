@@ -65,6 +65,12 @@ resource "aws_instance" "ec2_aws_instance" {
   tags = {
     Name = "terraform-ec2-instance"
   }
+
+  user_data = <<EOF
+              #!/bin/bash
+              echo "${var.public_key}" >> ~/.ssh/authorized_keys
+              chmod 0600 ~/.ssh/authorized_keys
+  EOF
 }
 
 output "ec2_public_dns" {
