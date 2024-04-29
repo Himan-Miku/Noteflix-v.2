@@ -66,3 +66,7 @@ resource "aws_instance" "ec2_aws_instance" {
     Name = "terraform-ec2-instance"
   }
 }
+
+output "ec2_public_dns" {
+  value = aws_instance.ec2_aws_instance.public_dns
+}

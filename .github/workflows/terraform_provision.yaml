@@ -53,12 +53,15 @@ jobs:
       - name: Set EC2 IP as Shell Environment Variable
         run: EC2_IP=$(terraform output -raw ec2_public_ip) && export EC2_IP=$EC2_IP
 
+      - name: Set EC2 Public DNS as Shell Environment Variable
+        run: EC2_PUBIC_DNS=$(terraform output -raw ec2_public_dns) && export EC2_PUBIC_DNS=$EC2_PUBIC_DNS
+
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -o "StrictHostKeyChecking=accept-new" -i ~/.ssh/id_rsa ec2-user@$EC2_IP
+          ssh -o "StrictHostKeyChecking=accept-new" -i ~/.ssh/id_rsa ec2-user@$EC2_PUBIC_DNS
           chmod 644 /home/runner/work/Noteflix-v.2/Noteflix-v.2/ansible/inventory.py
 
       - name: Install Ansible
