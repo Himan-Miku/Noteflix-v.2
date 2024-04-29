@@ -58,7 +58,7 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H $EC2_IP >> ~/.ssh/known_hosts
+          ssh -o "StrictHostKeyChecking=accept-new" -i ~/.ssh/id_rsa ec2-user@$EC2_IP
           chmod 644 /home/runner/work/Noteflix-v.2/Noteflix-v.2/ansible/inventory.py
 
       - name: Install Ansible
