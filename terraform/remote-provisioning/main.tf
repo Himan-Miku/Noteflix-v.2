@@ -68,14 +68,14 @@ resource "aws_instance" "ec2_aws_instance" {
 
   provisioner "remote-exec" {
     inline = [
-      "echo '${file("~/.ssh/id_rsa.pub")}' >> ~/.ssh/authorized_keys",
+      "echo '${file("/tmp/id_rsa.pub")}' >> ~/.ssh/authorized_keys",
       "chmod 600 ~/.ssh/authorized_keys"
     ]
 
     connection {
       type        = "ssh"
       user        = "ec2-user"
-      private_key = file("~/.ssh/id_rsa")
+      private_key = file("/tmp/id_rsa")
       host        = self.public_ip
     }
   }
