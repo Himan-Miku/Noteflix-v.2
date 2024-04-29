@@ -27,6 +27,11 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Set SSH keys for GitHub Actions
+        run: |
+          echo "${{ secrets.SSH_ID_RSA }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_ID_RSA_PUB }}" > ~/.ssh/id_rsa.pub && chmod 600 ~/.ssh/id_rsa.pub
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -49,6 +54,5 @@ jobs:
         id: apply
         run: terraform apply -auto-approve
 
-      - name: Terraform Output
-        id: output
-        run: terraform output
+      - name: Set EC2 IP as GitHub Actions Environment Variable
+        run: echo "EC2_IP=$(terraform output -raw ec2_public_ip)" >> $GITHUB_ENV
