@@ -58,29 +58,11 @@ resource "aws_security_group" "instance_sg" {
   }
 }
 
-resource "aws_key_pair" "deploy_key" {
-  key_name   = "deploy_key"
-  public_key = file("~/.ssh/deploy_key.pub")
-}
-
 resource "aws_instance" "ec2_aws_instance" {
   ami             = "ami-001843b876406202a"
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.instance_sg.name]
-  key_name        = aws_key_pair.deploy_key.key_name
   tags = {
     Name = "terraform-ec2-instance"
   }
-}
-
-data "aws_key_pair" "deploy_key_info" {
-  key_name = aws_key_pair.deploy_key.key_name
-}
-
-output "private_key" {
-  value = data.aws_key_pair.deploy_key_info.private_key_pem
-}
-
-output "public_dns" {
-  value = aws_instance.ec2_aws_instance.public_dns
 }

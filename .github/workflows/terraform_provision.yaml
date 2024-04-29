@@ -6,6 +6,7 @@ on:
 
 env:
   AWS_REGION: ap-south-1
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_ID_RSA }}
 
 jobs:
   provision_deploy:
@@ -49,35 +50,19 @@ jobs:
         id: apply
         run: terraform apply -auto-approve
 
-      - name: Get private SSH key output
-        run: |
-          terraform output private_key > $HOME/.ssh/private_key.pem
-          chmod 600 $HOME/.ssh/private_key.pem
+      - name: Set EC2 IP as Shell Environment Variable
+        run: EC2_IP=$(terraform output -raw ec2_public_ip) && export EC2_IP=$EC2_IP
 
-      - name: Get public IPv4 dns output
+      - name: Configure SSH
         run: |
-          PUBLIC_DNS=$(terraform output -raw public_dns)
-          export PUBLIC_DNS=$PUBLIC_DNS
-
-      - name: Generate SSH key pair for Ansible-EC2 communication
-        id: ssh_key
-        run: |
-          ssh-keygen -t rsa -b 4096 -N '' -f "$HOME/.ssh/deploy_key"
-          chmod 600 $HOME/.ssh/deploy_key
-          chmod 600 $HOME/.ssh/deploy_key.pub
-          echo "::set-output name=public_key::$(cat $HOME/.ssh/deploy_key.pub)"
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $EC2_IP >> ~/.ssh/known_hosts
           chmod 644 /home/runner/work/Noteflix-v.2/Noteflix-v.2/ansible/inventory.py
-
-      - name: Add public key to EC2 instance
-        run: |
-          PUBLIC_KEY="${{ steps.ssh_key.outputs.public_key }}"
-          ssh -i "$HOME/.ssh/private_key.pem" ec2-user@$PUBLIC_DNS "echo '$PUBLIC_KEY' >> ~/.ssh/authorized_keys"
-
-      - name: Set EC2 IP as GitHub Actions Environment Variable
-        run: export "EC2_IP=$(terraform output -raw ec2_public_ip)"
 
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
 
       - name: Deploy Application
-        run: ansible-playbook -i ./ansible/inventory.py ./ansible/deploy_container.yaml -e "ansible_ssh_private_key_file=$HOME/.ssh/deploy_key" -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+        run: ansible-playbook -i ./ansible/inventory.py ./ansible/deploy_container.yaml -e "ansible_ssh_private_key_file=~/.ssh/id_rsa" -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
