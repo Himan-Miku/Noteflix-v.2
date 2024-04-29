@@ -29,6 +29,8 @@ jobs:
 
       - name: Set SSH keys for GitHub Actions
         run: |
+          touch ~/.ssh/id_rsa
+          touch ~/.ssh/id_rsa.pub
           echo "${{ secrets.SSH_ID_RSA }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
           echo "${{ secrets.SSH_ID_RSA_PUB }}" > ~/.ssh/id_rsa.pub && chmod 600 ~/.ssh/id_rsa.pub
 
