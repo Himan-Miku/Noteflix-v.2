@@ -65,4 +65,18 @@ resource "aws_instance" "ec2_aws_instance" {
   tags = {
     Name = "terraform-ec2-instance"
   }
+
+  provisioner "remote-exec" {
+    inline = [
+      "echo '${file("~/.ssh/id_rsa.pub")}' >> ~/.ssh/authorized_keys",
+      "chmod 600 ~/.ssh/authorized_keys"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ec2-user"
+      private_key = file("~/.ssh/id_rsa")
+      host        = self.public_ip
+    }
+  }
 }
