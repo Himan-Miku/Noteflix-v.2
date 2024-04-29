@@ -58,25 +58,29 @@ resource "aws_security_group" "instance_sg" {
   }
 }
 
+resource "aws_key_pair" "deploy_key" {
+  key_name   = "deploy_key"
+  public_key = file("~/.ssh/deploy_key.pub")
+}
+
 resource "aws_instance" "ec2_aws_instance" {
   ami             = "ami-001843b876406202a"
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.instance_sg.name]
+  key_name        = aws_key_pair.deploy_key.key_name
   tags = {
     Name = "terraform-ec2-instance"
   }
+}
 
-  provisioner "remote-exec" {
-    inline = [
-      "echo '${file("/tmp/id_rsa.pub")}' >> ~/.ssh/authorized_keys",
-      "chmod 600 ~/.ssh/authorized_keys"
-    ]
+data "aws_key_pair" "deploy_key_info" {
+  key_name = aws_key_pair.deploy_key.key_name
+}
 
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"
-      private_key = file("/tmp/id_rsa")
-      host        = self.public_ip
-    }
-  }
+output "private_key" {
+  value = data.aws_key_pair.deploy_key_info.private_key_pem
+}
+
+output "public_dns" {
+  value = aws_instance.ec2_aws_instance.public_dns
 }
