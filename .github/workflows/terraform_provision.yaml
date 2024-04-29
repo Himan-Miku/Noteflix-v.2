@@ -51,10 +51,10 @@ jobs:
         run: terraform apply -auto-approve
 
       - name: Set EC2 IP as Shell Environment Variable
-        run: EC2_IP=$(terraform output -raw ec2_public_ip) && export EC2_IP=$EC2_IP
+        run: EC2_IP=$(terraform output -raw ec2_public_ip) && export EC2_IP=$EC2_IP && echo $EC2_IP
 
       - name: Set EC2 Public DNS as Shell Environment Variable
-        run: EC2_PUBIC_DNS=$(terraform output -raw ec2_public_dns) && export EC2_PUBIC_DNS=$EC2_PUBIC_DNS
+        run: EC2_PUBIC_DNS=$(terraform output -raw ec2_public_dns) && export EC2_PUBIC_DNS=$EC2_PUBIC_DNS && echo $EC2_PUBIC_DNS
 
       - name: Configure SSH
         run: |
