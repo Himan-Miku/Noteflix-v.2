@@ -1,0 +1,20 @@
+---
+- name: Deploy Docker container from ECR
+  hosts: ec2
+  become: true
+  tasks:
+    - name: Log in to Amazon ECR
+      command: $(aws ecr get-login --no-include-email --region ap-south-1)
+
+    - name: Pull Docker image from ECR
+      docker_image:
+        name: 065642457853.dkr.ecr.ap-south-1.amazonaws.com/noteflix:8d315bb4687824af3885686e0b19227d2b128eba
+        source: pull
+
+    - name: Run Docker container
+      docker_container:
+        name: noteflix
+        image: 065642457853.dkr.ecr.ap-south-1.amazonaws.com/noteflix:8d315bb4687824af3885686e0b19227d2b128eba
+        ports:
+          - "3000:3000"
+        detach: true
