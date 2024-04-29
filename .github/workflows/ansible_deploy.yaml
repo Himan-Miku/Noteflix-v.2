@@ -6,7 +6,7 @@ on:
     types:
       - completed
     branches:
-      - main
+      - feature/ansible-deploy
 
 env:
   AWS_REGION: ap-south-1

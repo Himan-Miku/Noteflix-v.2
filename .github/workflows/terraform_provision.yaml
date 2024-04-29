@@ -1,4 +1,4 @@
-name: Terraform Provisioning
+name: Terraform Provisioning & Conf Management with Ansible
 
 on:
   push:
@@ -8,8 +8,8 @@ env:
   AWS_REGION: ap-south-1
 
 jobs:
-  terraform:
-    name: Terraform Provision
+  provision_deploy:
+    name: Terraform Provision & Deploy Application
     runs-on: ubuntu-latest
     environment: production
     defaults:
@@ -27,12 +27,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Set SSH keys for GitHub Actions
+      - name: Set SSH keys & permissions
         run: |
           touch ~/.ssh/id_rsa
           touch ~/.ssh/id_rsa.pub
           echo "${{ secrets.SSH_ID_RSA }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
           echo "${{ secrets.SSH_ID_RSA_PUB }}" > ~/.ssh/id_rsa.pub && chmod 600 ~/.ssh/id_rsa.pub
+          chmod 644 /home/runner/work/Noteflix-v.2/Noteflix-v.2/ansible/inventory.py
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -57,4 +58,10 @@ jobs:
         run: terraform apply -auto-approve
 
       - name: Set EC2 IP as GitHub Actions Environment Variable
-        run: echo "EC2_IP=$(terraform output -raw ec2_public_ip)" >> $GITHUB_ENV
+        run: export "EC2_IP=$(terraform output -raw ec2_public_ip)"
+
+      - name: Install Ansible
+        run: sudo apt-get update && sudo apt-get install -y ansible
+
+      - name: Deploy Application
+        run: ansible-playbook -i ./ansible/inventory.py ./ansible/deploy_container.yaml
