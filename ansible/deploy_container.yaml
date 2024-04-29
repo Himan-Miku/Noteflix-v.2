@@ -1,6 +1,6 @@
 ---
 - name: Deploy Docker container from ECR
-  hosts: ec2
+  hosts: all
   become: true
   tasks:
     - name: Log in to Amazon ECR

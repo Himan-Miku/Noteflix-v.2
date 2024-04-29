@@ -82,4 +82,7 @@ jobs:
 
       - name: Deploy Application
         working-directory: ansible
-        run: ansible-playbook -i $EC2_PUBLIC_IP, -u ec2-user --private-key ~/.ssh/id_rsa deploy_container.yaml
+        run: |
+          echo "[all]" > inventory
+          echo "$EC2_PUBLIC_DNS" >> inventory
+          ansible-playbook -i inventory, -u ec2-user --private-key ~/.ssh/id_rsa deploy_container.yaml
