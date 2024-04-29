@@ -30,7 +30,7 @@ jobs:
       - name: Set SSH keys & Permissions
         run: |
           ssh-keygen -t rsa -b 4096 -f /tmp/id_rsa -N ''
-          chmod 600 /tmp/id_rsa
+          chmod 400 /tmp/id_rsa
           chmod 600 /tmp/id_rsa.pub
           chmod 644 /home/runner/work/Noteflix-v.2/Noteflix-v.2/ansible/inventory.py
 
