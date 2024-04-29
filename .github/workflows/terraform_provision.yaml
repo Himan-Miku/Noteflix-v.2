@@ -81,4 +81,5 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y ansible
 
       - name: Deploy Application
-        run: ansible-playbook -i ./ansible/inventory.py ./ansible/deploy_container.yaml -e "ansible_ssh_private_key_file=~/.ssh/id_rsa" -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+        working-directory: ansible
+        run: ansible-playbook -i inventory.py deploy_container.yaml -e "ansible_ssh_private_key_file=~/.ssh/id_rsa" -e "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
