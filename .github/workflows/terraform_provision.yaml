@@ -51,6 +51,7 @@ jobs:
         run: terraform apply -auto-approve
 
       - name: Get EC2 Public DNS
+        id: get_ec2_public_dns
         run: |
           terraform output ec2_public_dns > dnsfile.txt
           ec2_public_dns=$(<dnsfile.txt)
@@ -58,8 +59,10 @@ jobs:
           echo "EC2_PUBLIC_DNS<<EOF" >> $GITHUB_ENV
           echo "$ec2_public_dns" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          echo "::set-output name=ec2_public_dns::$ec2_public_dns"
 
       - name: Get EC2 Public IP
+        id: get_ec2_public_ip
         run: |
           terraform output -raw ec2_public_ip > ipfile.txt
           ec2_public_ip=$(<ipfile.txt)
@@ -67,6 +70,7 @@ jobs:
           echo "EC2_PUBLIC_IP<<EOF" >> $GITHUB_ENV
           echo "$ec2_public_ip" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          echo "::set-output name=ec2_public_ip::$ec2_public_ip"
 
       - name: Configure SSH
         run: |
@@ -86,6 +90,6 @@ jobs:
         working-directory: ansible
         run: |
           echo "[all]" > inventory
-          echo $EC2_PUBLIC_IP >> inventory
+          echo ${{ steps.get_ec2_public_ip.outputs.ec2_public_ip }} >> inventory
           cat inventory
           ansible-playbook -i inventory, -u ec2-user --private-key ~/.ssh/id_rsa deploy_container.yaml
