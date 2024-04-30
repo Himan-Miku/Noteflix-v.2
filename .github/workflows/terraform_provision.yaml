@@ -52,16 +52,12 @@ jobs:
 
       - name: Get EC2 Public DNS
         run: |
-          terraform output -raw ec2_public_dns >> dnsfile.txt
-          ec2_public_dns=$(<dnsfile.txt)
-          ec2_public_dns="${ec2_public_dns//\"}"
+          ec2_public_dns=$(terraform output -raw ec2_public_dns)
           echo "EC2_PUBLIC_DNS=$ec2_public_dns" >> $GITHUB_ENV
 
       - name: Get EC2 Public IP
         run: |
-          terraform output -raw ec2_public_ip >> ipfile.txt
-          ec2_public_ip=$(<ipfile.txt)
-          ec2_public_ip="${ec2_public_ip//\"}"
+          ec2_public_ip=$(terraform output -raw ec2_public_ip)
           echo "EC2_PUBLIC_IP=$ec2_public_ip" >> $GITHUB_ENV
 
       - name: Configure SSH
