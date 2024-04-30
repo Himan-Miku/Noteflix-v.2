@@ -94,4 +94,4 @@ jobs:
           echo "    \"${EC2_PUBLIC_DNS}\":" >> inventory.yaml
           echo "      ansible_host: \"${EC2_PUBLIC_IP}\"" >> inventory.yaml
           cat inventory.yaml
-          ansible-playbook -i inventory --private-key ~/.ssh/id_rsa deploy_container.yaml
+          ansible-playbook -i inventory.yaml --private-key ~/.ssh/id_rsa deploy_container.yaml
