@@ -75,6 +75,9 @@ jobs:
 
       - name: Configure SSH
         run: |
+          cat /etc/ssh/sshd_config
+          sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
+          sudo systemctl restart sshd
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
