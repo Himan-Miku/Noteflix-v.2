@@ -89,7 +89,9 @@ jobs:
       - name: Deploy Application
         working-directory: ansible
         run: |
-          echo "[ec2]" > inventory
-          echo "$EC2_PUBLIC_DNS ansible_host=${EC2_PUBLIC_IP}" >> inventory
-          cat inventory
+          echo "all:" > inventory.yaml
+          echo "  hosts:" >> inventory.yaml
+          echo "    \"${EC2_PUBLIC_DNS}\":" >> inventory.yaml
+          echo "      ansible_host: \"${EC2_PUBLIC_IP}\"" >> inventory.yaml
+          cat inventory.yaml
           ansible-playbook -i inventory --private-key ~/.ssh/id_rsa deploy_container.yaml
