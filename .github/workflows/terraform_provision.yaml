@@ -78,7 +78,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H '$EC2_INSTANCE_IP' >> ~/.ssh/known_hosts
           chmod 644 /home/runner/work/Noteflix-v.2/Noteflix-v.2/ansible/inventory.py
 
       # - name: Test SSH Connection
@@ -96,4 +95,4 @@ jobs:
           echo "    \"${{ env.EC2_PUBLIC_DNS }}\":" >> inventory.yaml
           echo "      ansible_host: \"${{ env.EC2_PUBLIC_IP }}\"" >> inventory.yaml
           cat inventory.yaml
-          ansible-playbook -i inventory.yaml --private-key ~/.ssh/id_rsa deploy_container.yaml
+          ansible-playbook -i inventory.yaml --key-file=~/.ssh/id_rsa deploy_container.yaml
