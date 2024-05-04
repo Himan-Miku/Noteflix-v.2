@@ -21,21 +21,25 @@
       register: ecr_login
       changed_when: false
 
-    - name: Add Docker GPG key
-      shell: curl -fsSL https://download.docker.com/linux/amazonlinux/gpg | sudo gpg --import -
-      become: yes
-
-    - name: Add Docker repository
-      shell: echo -e "[docker]\nname=Docker Stable - $basearch\nbaseurl=https://download.docker.com/linux/centos/7/$basearch/stable\ngpgcheck=1\ngpgkey=https://download.docker.com/linux/amazonlinux/gpg\nenabled=1\n" | sudo tee /etc/yum.repos.d/docker.repo
-      become: yes
-
-    - name: Install Docker engine
+    - name: yum update
       yum:
-        name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
+        name: "*"
         state: latest
+
+    - name: Install Docker
+      yum:
+        name: docker
+        state: present
+    
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+
+    - name: Enable Docker service
+      service:
+        name: docker
+        enabled: yes
 
     - name: Authenticate Docker with AWS ECR
       docker_login:
