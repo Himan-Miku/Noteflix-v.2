@@ -21,6 +21,11 @@
       register: ecr_login
       changed_when: false
 
+    - name: Remove conflicting curl-minimal package
+      yum:
+        name: curl-minimal
+        state: absent
+
     - name: Install docker dependencies
       yum:
         name:
@@ -30,15 +35,15 @@
           - curl
           - gnupg
         state: latest
-
+    
     - name: Add Docker GPG key
       shell: curl -fsSL https://download.docker.com/linux/amazonlinux/gpg | sudo gpg --import -
       become: yes
-
+    
     - name: Add Docker repository
       shell: echo -e "[docker]\nname=Docker Stable - $basearch\nbaseurl=https://download.docker.com/linux/centos/7/$basearch/stable\ngpgcheck=1\ngpgkey=https://download.docker.com/linux/amazonlinux/gpg\nenabled=1\n" | sudo tee /etc/yum.repos.d/docker.repo
       become: yes
-
+    
     - name: Install Docker engine
       yum:
         name:
