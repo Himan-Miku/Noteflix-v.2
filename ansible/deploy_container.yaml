@@ -12,6 +12,10 @@
     docker_port_mapping: "3000:3000"
 
   tasks:
+    - name: Configure AWS credentials using aws configure
+      shell: "aws configure set aws_access_key_id {{ lookup('env', 'AWS_ACCESS_KEY_ID') }} && aws configure set aws_secret_access_key {{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }} && aws configure set region {{ aws_region }}"
+      changed_when: false
+
     - name: Log in to AWS ECR
       shell: "aws ecr get-login-password --region {{ aws_region }}"
       register: ecr_login
