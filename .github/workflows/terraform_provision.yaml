@@ -83,10 +83,6 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
           echo "::set-output name=EC2_PUBLIC_IP::$ec2_public_ip"
 
-      # - name: Test SSH Connection
-      #   run: |
-      #     ssh -v -i ~/.ssh/id_rsa ec2-user@$EC2_PUBLIC_DNS
-
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
 
@@ -105,4 +101,7 @@ jobs:
           echo "    ${EC2_PUBLIC_DNS}:" >> inventory.yaml
           echo "      ansible_host: ${EC2_PUBLIC_IP}" >> inventory.yaml
           cat inventory.yaml
+          echo "AWS configure list:"
+          cat ~/.aws/credentials
+          aws configure list
           ansible-playbook -i inventory.yaml --private-key=~/.ssh/ansible-ssh.pem deploy_container.yaml
