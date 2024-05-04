@@ -3,35 +3,36 @@
   hosts: all
   remote_user: ec2-user
   become: true
-  collections:
-    - community.aws
   vars:
-    ansible_ssh_private_key_file: ~/.ssh/ansible-ssh.pem
+    aws_region: "ap-south-1"
+    ecr_registry: "065642457853.dkr.ecr.ap-south-1.amazonaws.com"
+    ecr_image_name: "noteflix"
+    ecr_image_tag: "8d315bb4687824af3885686e0b19227d2b128eba"
+    docker_container_name: "noteflix"
+    docker_port_mapping: "3000:3000"
+
   tasks:
-    - name: Install amazon-ecr-credential-helper
-      package:
-        name: amazon-ecr-credential-helper
-        state: present
+    - name: Log in to AWS ECR
+      command: "aws ecr get-login-password --region {{ aws_region }}"
+      register: ecr_login
+      changed_when: false
 
-    - name: Install Docker
-      package:
-        name: docker
-        state: present
+    - name: Authenticate Docker with AWS ECR
+      docker_login:
+        registry_url: "{{ ecr_registry }}"
+        username: AWS
+        password: "{{ ecr_login.stdout }}"
+        email: none
 
-    - name: Configure ECR login
-      community.aws.ecr_login:
-        region: ap-south-1
-      when: not amazon_ecr_credential_helper.pkg.version
-
-    - name: Pull Docker image from ECR
+    - name: Pull Docker image from AWS ECR
       docker_image:
-        name: 065642457853.dkr.ecr.ap-south-1.amazonaws.com/noteflix:8d315bb4687824af3885686e0b19227d2b128eba
+        name: "{{ ecr_registry }}/{{ ecr_image_name }}:{{ ecr_image_tag }}"
         source: pull
 
     - name: Run Docker container
       docker_container:
-        name: noteflix
-        image: 065642457853.dkr.ecr.ap-south-1.amazonaws.com/noteflix:8d315bb4687824af3885686e0b19227d2b128eba
+        name: "{{ docker_container_name }}"
+        image: "{{ ecr_registry }}/{{ ecr_image_name }}:{{ ecr_image_tag }}"
+        state: started
         ports:
-          - "3000:3000"
-        detach: true
+          - "{{ docker_port_mapping }}"
