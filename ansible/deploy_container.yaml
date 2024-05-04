@@ -3,12 +3,14 @@
   hosts: all
   remote_user: ec2-user
   become: true
+  collections:
+    - community.aws
   vars:
     ansible_ssh_private_key_file: ~/.ssh/ansible-ssh.pem
   tasks:
-    - name: Install AWS CLI
+    - name: Install amazon-ecr-credential-helper
       package:
-        name: awscli
+        name: amazon-ecr-credential-helper
         state: present
 
     - name: Install Docker
@@ -16,8 +18,10 @@
         name: docker
         state: present
 
-    - name: Log in to Amazon ECR
-      shell: aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin https://065642457853.dkr.ecr.ap-south-1.amazonaws.com
+    - name: Configure ECR login
+      community.aws.ecr_login:
+        region: ap-south-1
+      when: not amazon_ecr_credential_helper.pkg.version
 
     - name: Pull Docker image from ECR
       docker_image:
