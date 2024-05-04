@@ -21,11 +21,12 @@
       register: ecr_login
       changed_when: false
 
-    - name: Install Docker on Ubuntu
+    - name: Install Docker
       become: yes
-      apt:
+      package:
         name: docker.io
         state: present
+        update_cache: yes
 
     - name: Authenticate Docker with AWS ECR
       docker_login:
