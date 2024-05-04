@@ -21,21 +21,6 @@
       register: ecr_login
       changed_when: false
 
-    - name: Install aptitude
-      yum:
-        name: aptitude
-        state: latest
-
-    - name: Install required system packages
-      yum:
-        name:
-          - yum-utils
-          - device-mapper-persistent-data
-          - lvm2
-          - python3-pip
-          - python3-setuptools
-        state: latest
-
     - name: Add Docker GPG apt Key
       apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
@@ -50,7 +35,6 @@
       yum:
         name: docker-ce
         state: present
-      when: ansible_os_family == 'RedHat'
 
     - name: Install Docker Module for Python
       pip:
