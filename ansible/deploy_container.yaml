@@ -22,23 +22,19 @@
       changed_when: false
 
     - name: Install aptitude
-      apt:
+      yum:
         name: aptitude
         state: latest
-        update_cache: true
 
     - name: Install required system packages
-      apt:
-        pkg:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - software-properties-common
+      yum:
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
           - python3-pip
-          - virtualenv
           - python3-setuptools
         state: latest
-        update_cache: true
 
     - name: Add Docker GPG apt Key
       apt_key:
@@ -50,11 +46,11 @@
         repo: deb https://download.docker.com/linux/ubuntu focal stable
         state: present
 
-    - name: Update apt and install docker-ce
-      apt:
+    - name: Install Docker on CentOS
+      yum:
         name: docker-ce
-        state: latest
-        update_cache: true
+        state: present
+      when: ansible_os_family == 'RedHat'
 
     - name: Install Docker Module for Python
       pip:
