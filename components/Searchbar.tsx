@@ -4,6 +4,7 @@ import { AlgoliaStore } from "@/context/AlgoliaContext";
 import { useSession } from "next-auth/react";
 import algoliasearch from "algoliasearch/lite";
 import { ISidebarContext, sidebarContext } from "@/context/SidebarContext";
+import { usePathname } from "next/navigation";
 
 interface SearchResultData {
   readonly objectID: string;
@@ -17,7 +18,8 @@ export type SearchResults = SearchResultItem[];
 
 const Searchbar = ({ isOnMobile }: { isOnMobile: boolean }) => {
   const { showSidebar, setShowSidebar } = sidebarContext() as ISidebarContext;
-
+  const pathname = usePathname();
+  const isSearchBarEnabled = pathname === "/";
   const { queryy, setQueryy, setSearchResults } = AlgoliaStore();
   const { data: session } = useSession();
 
@@ -84,12 +86,15 @@ const Searchbar = ({ isOnMobile }: { isOnMobile: boolean }) => {
       )}
 
       <input
-        placeholder="Search . . ."
+        placeholder={
+          isSearchBarEnabled ? "Search . . ." : "Search from Notes tab 📝"
+        }
         className="w-full px-2 bg-[#525355] text-[#E9E9E9] placeholder-[#E9E9E9] outline-none"
         type="text"
         value={queryy}
         onChange={(e) => setQueryy(e.target.value)}
         onKeyUp={search}
+        disabled={!isSearchBarEnabled}
       />
       <button
         className="btn btn-ghost btn-circle h-[2.5rem]"
