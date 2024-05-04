@@ -28,6 +28,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/ansible-ssh.pem
+          chmod 600 ~/.ssh/ansible-ssh.pem
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
         with:
@@ -73,17 +80,6 @@ jobs:
           echo "EOF" >> $GITHUB_ENV
           echo "::set-output name=EC2_PUBLIC_IP::$ec2_public_ip"
 
-      - name: Configure SSH
-        run: |
-          cat /etc/ssh/sshd_config
-          sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
-          sudo systemctl restart sshd
-          mkdir -p ~/.ssh
-          chmod 700 ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          chmod 644 /home/runner/work/Noteflix-v.2/Noteflix-v.2/ansible/inventory.py
-
       # - name: Test SSH Connection
       #   run: |
       #     ssh -v -i ~/.ssh/id_rsa ec2-user@$EC2_PUBLIC_DNS
@@ -103,4 +99,4 @@ jobs:
           echo "    ${EC2_PUBLIC_DNS}:" >> inventory.yaml
           echo "      ansible_host: ${EC2_PUBLIC_IP}" >> inventory.yaml
           cat inventory.yaml
-          ansible-playbook -i inventory.yaml --private-key=~/.ssh/id_rsa deploy_container.yaml
+          ansible-playbook -i inventory.yaml --private-key=~/.ssh/ansible-ssh.pem deploy_container.yaml
