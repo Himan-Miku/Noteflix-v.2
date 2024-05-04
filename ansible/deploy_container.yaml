@@ -11,8 +11,13 @@
         name: awscli
         state: present
 
+    - name: Install Docker
+      package:
+        name: docker
+        state: present
+
     - name: Log in to Amazon ECR
-      shell: "aws ecr get-login --no-include-email --region ap-south-1"
+      shell: aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin https://065642457853.dkr.ecr.ap-south-1.amazonaws.com
 
     - name: Pull Docker image from ECR
       docker_image:
