@@ -21,6 +21,12 @@
       register: ecr_login
       changed_when: false
 
+    - name: Install Docker on Ubuntu
+      become: yes
+      apt:
+        name: docker.io
+        state: present
+
     - name: Authenticate Docker with AWS ECR
       docker_login:
         registry_url: "{{ ecr_registry }}"
