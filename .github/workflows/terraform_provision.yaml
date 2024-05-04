@@ -109,4 +109,5 @@ jobs:
           echo "      ansible_host: ${EC2_PUBLIC_IP}" >> inventory.yaml
           cat inventory.yaml
           cat ~/.aws/credentials
+          ansible-galaxy collection install community.docker
           ansible-playbook -i inventory.yaml --private-key=~/.ssh/ansible-ssh.pem deploy_container.yaml

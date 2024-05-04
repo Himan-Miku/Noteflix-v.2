@@ -21,24 +21,31 @@
       register: ecr_login
       changed_when: false
 
-    - name: Add Docker GPG apt Key
-      apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-
-    - name: Add Docker Repository
-      apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu focal stable
-        state: present
-
-    - name: Install Docker on CentOS
+    - name: Install docker dependencies
       yum:
-        name: docker-ce
-        state: present
+        name:
+          - yum-utils
+          - device-mapper-persistent-data
+          - lvm2
+          - curl
+          - gnupg
+        state: latest
 
-    - name: Install Docker Module for Python
-      pip:
-        name: docker
+    - name: Add Docker GPG key
+      shell: curl -fsSL https://download.docker.com/linux/amazonlinux/gpg | sudo gpg --import -
+      become: yes
+
+    - name: Add Docker repository
+      shell: echo -e "[docker]\nname=Docker Stable - $basearch\nbaseurl=https://download.docker.com/linux/centos/7/$basearch/stable\ngpgcheck=1\ngpgkey=https://download.docker.com/linux/amazonlinux/gpg\nenabled=1\n" | sudo tee /etc/yum.repos.d/docker.repo
+      become: yes
+
+    - name: Install Docker engine
+      yum:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: latest
 
     - name: Authenticate Docker with AWS ECR
       docker_login:
