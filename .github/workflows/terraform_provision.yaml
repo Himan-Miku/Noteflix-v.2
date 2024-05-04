@@ -90,6 +90,9 @@ jobs:
       - name: Install Ansible
         run: sudo apt-get update && sudo apt-get install -y ansible
 
+      - name: Install boto3
+        run: sudo apt-get install -y python3-pip && pip3 install boto3
+
       - name: Deploy Application
         working-directory: ansible
         run: |
