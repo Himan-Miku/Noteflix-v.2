@@ -13,7 +13,7 @@
 
   tasks:
     - name: Log in to AWS ECR
-      command: "aws ecr get-login-password --region {{ aws_region }}"
+      shell: "aws ecr get-login-password --region {{ aws_region }}"
       register: ecr_login
       changed_when: false
 
