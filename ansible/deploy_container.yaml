@@ -2,7 +2,7 @@
 - name: Deploy Docker container from ECR
   hosts: all
   remote_user: ec2-user
-  become: true
+  become: yes
   vars:
     aws_region: "ap-south-1"
     ecr_registry: "065642457853.dkr.ecr.ap-south-1.amazonaws.com"
