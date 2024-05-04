@@ -26,7 +26,6 @@
         registry_url: "{{ ecr_registry }}"
         username: AWS
         password: "{{ ecr_login.stdout }}"
-        email: none
 
     - name: Pull Docker image from AWS ECR
       docker_image:
