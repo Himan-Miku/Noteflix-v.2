@@ -108,4 +108,5 @@ jobs:
           echo "    ${EC2_PUBLIC_DNS}:" >> inventory.yaml
           echo "      ansible_host: ${EC2_PUBLIC_IP}" >> inventory.yaml
           cat inventory.yaml
+          cat ~/.aws/credentials
           ansible-playbook -i inventory.yaml --private-key=~/.ssh/ansible-ssh.pem deploy_container.yaml
