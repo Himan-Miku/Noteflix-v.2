@@ -1,8 +1,8 @@
 name: Terraform Provisioning & Conf Management with Ansible
 
 on:
-  push:
-    branches: ["main"]
+  release:
+    types: [published]
 
 env:
   AWS_REGION: ap-south-1

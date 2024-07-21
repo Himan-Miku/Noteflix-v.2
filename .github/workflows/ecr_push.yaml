@@ -1,8 +1,8 @@
 name: Store Docker Image in Amazon ECR
 
 on:
-  push:
-    branches: ["main"]
+  release:
+    types: [published]
 
 env:
   AWS_REGION: ap-south-1
