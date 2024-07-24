@@ -47,7 +47,7 @@ const Note = ({ id, data }: noteProps) => {
           </h3>
         </div>
         <div className="p-2">
-          <p className="text-[#f5f5f5] font-normal leading-[1.35rem] text-sm max-h-64 break-all overflow-y-auto scrollbar-hide">
+          <p className="text-[#f5f5f5] font-normal leading-[1.35rem] text-sm max-h-64 break-all whitespace-pre-line overflow-y-auto scrollbar-hide">
             {data.content}
           </p>
         </div>
