@@ -63,6 +63,7 @@ resource "aws_instance" "ec2_aws_instance" {
   ami             = "ami-001843b876406202a"
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.instance_sg.name]
+  key_name        = "noteflix-pipeline-kp"
   tags = {
     Name = "terraform-ec2-instance"
   }
