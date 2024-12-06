@@ -7,7 +7,7 @@
     aws_region: "ap-south-1"
     ecr_registry: "140023366498.dkr.ecr.ap-south-1.amazonaws.com"
     ecr_image_name: "noteflix"
-    ecr_image_tag: "8d315bb4687824af3885686e0b19227d2b128eba"
+    ecr_image_tag: "d8418684b7354c9531fadbe85cfb67f390edc9db"
     docker_container_name: "noteflix"
     docker_port_mapping: "3000:3000"
 
