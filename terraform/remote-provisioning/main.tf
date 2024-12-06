@@ -1,15 +1,10 @@
-locals {
-  private_key_path = "~/.ssh/ansible-ssh.pem"
-  key_name         = "ansible-ssh"
-  ssh_user         = "ec2-user"
-}
 
 terraform {
   backend "s3" {
-    bucket         = "noteflix-remote-backend"
+    bucket         = "noteflix-remote-backend-v2"
     key            = "terraform.tfstate"
     region         = "ap-south-1"
-    dynamodb_table = "noteflix-remote-backend-lock"
+    dynamodb_table = "noteflix-remote-backend-lock-v2"
     encrypt        = true
   }
 
@@ -70,18 +65,6 @@ resource "aws_instance" "ec2_aws_instance" {
   security_groups = [aws_security_group.instance_sg.name]
   tags = {
     Name = "terraform-ec2-instance"
-  }
-  key_name = local.key_name
-
-  provisioner "remote-exec" {
-    inline = ["echo 'Wait until SSH is ready'"]
-
-    connection {
-      type        = "ssh"
-      user        = local.ssh_user
-      private_key = file(local.private_key_path)
-      host        = self.public_ip
-    }
   }
 }
 

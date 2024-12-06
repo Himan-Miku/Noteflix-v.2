@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "noteflix-remote-backend"
+    bucket         = "noteflix-remote-backend-v2"
     key            = "terraform.tfstate"
     region         = "ap-south-1"
-    dynamodb_table = "noteflix-remote-backend-lock"
+    dynamodb_table = "noteflix-remote-backend-lock-v2"
     encrypt        = true
   }
 
@@ -22,7 +22,7 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "noteflix_backend_bucket" {
-  bucket        = "noteflix-remote-backend"
+  bucket        = "noteflix-remote-backend-v2"
   force_destroy = true
 }
 
@@ -43,7 +43,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "noteflix_backend_
 }
 
 resource "aws_dynamodb_table" "noteflix_backend_lock" {
-  name         = "noteflix-remote-backend-lock"
+  name         = "noteflix-remote-backend-lock-v2"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
   attribute {
